@@ -79,7 +79,7 @@ clean:
 
 fclean:			clean
 				rm -rf $(NAME)
-				rm -rf $(LIB_DIR)/libft.a
+				rm -rf $(LIB_DIR)libft.a
 
 re:				fclean all
 

@@ -28,18 +28,6 @@ int	keycmp(const char *s1, const char *s2)
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
 
-void	clear_list(t_list *list)
-{
-	t_list	*tmp;
-
-	while (list)
-	{
-		tmp = list;
-		list = list->next;
-		free(tmp);
-	}
-}
-
 void	sort_env(t_list *list_envp, t_list **sort_list)
 {
 	t_list		*tmp;
@@ -110,7 +98,7 @@ void	show_export(t_list *envp)
 		}
 		tmp = tmp->next;
 	}
-	clear_list(tmp);
+	ft_lstclear(&tmp, &free);
 }
 
 int	check_var(t_env_var *var)

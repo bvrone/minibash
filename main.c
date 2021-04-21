@@ -59,6 +59,13 @@
 //     }
 // }
 
+void	free_cmd(void *cmd)
+{
+	ft_split_clear(((t_command *)cmd)->argv);
+	free(cmd);
+	cmd = NULL;
+}
+
 int		process_shline(char **symbol_matrix, t_cmds_pipeline *pipeline)
 {
 	size_t	pipeline_i;
@@ -70,7 +77,7 @@ int		process_shline(char **symbol_matrix, t_cmds_pipeline *pipeline)
 	{
 		parse_pipeline(symbol_matrix, &pipeline_i, pipeline);
 		ft_executor(pipeline);
-		ft_lstclear(&pipeline->cmds, )
+		ft_lstclear(&pipeline->cmds, &free_cmd);
 	}
 	return (1);
 }
