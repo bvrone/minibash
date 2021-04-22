@@ -18,7 +18,6 @@
 
 # include "minishell_structures.h"
 
-t_env_var	*new_env_var(char *envp_line);
 size_t		handle_dollar(char **matrix, size_t *i, t_cmds_pipeline	*pipeline);
 size_t		handle_quotes(char **matrix, size_t *i, t_cmds_pipeline *pipeline);
 size_t		handle_dquotes(char **matrix, size_t *i,

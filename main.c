@@ -99,6 +99,59 @@ void	process_shline(char **symbol_matrix, t_cmds_pipeline *pipeline)
 	}
 }
 
+int		add_to_envp_if_not(char *key, t_list **envp)
+{
+	t_env_var	*env_var;
+	t_list		*new_lst;
+
+	if (!find_env_var(key, *envp))
+	{
+		env_var = new_env_var(key);
+		if (!env_var)
+			return (0);//malloc error
+		new_lst = ft_lstnew(env_var);
+		if (!new_lst)
+			return (0);//malloc error
+		ft_lstadd_front(envp,new_lst);
+	}
+	return (1);
+}
+
+int		inc_shlvl(t_cmds_pipeline *pipeline)
+{
+	t_env_var	*shlvl_var;
+	int			lvl;
+
+	if (!add_to_envp_if_not("SHLVL", &pipeline->envp))
+		return (0);
+	shlvl_var = find_env_var("SHLVL", pipeline->envp);
+	if (shlvl_var->value)
+	{
+		lvl = ft_atoi(shlvl_var->value);
+		lvl++;
+		free(shlvl_var->value);
+		shlvl_var->value = ft_itoa(lvl);
+		if (!shlvl_var->value)
+			return(0);
+	}
+	return (1);
+}
+
+void	init_vars(t_cmds_pipeline *pipeline, char *envp[])
+{
+	int			res;
+
+	pipeline->cmds = NULL;
+	pipeline->infile = NULL;
+	pipeline->outfile = NULL;
+	pipeline->last_ret_code = 0;
+	envp_to_list(pipeline, envp);
+	if (!add_to_envp_if_not("OLDPWD", &pipeline->envp))
+		exit(2);
+	if (!inc_shlvl(pipeline))
+		exit(2);
+}
+
 int		main(int argc, char *argv[], char *envp[])
 {
 	int				res;
@@ -108,10 +161,7 @@ int		main(int argc, char *argv[], char *envp[])
 
 	(void)argc;
 	(void)argv;
-	pipeline.cmds = NULL;
-	pipeline.infile = NULL;
-	pipeline.outfile = NULL;
-	envp_to_list(&pipeline, envp);
+	init_vars(&pipeline, envp);
 	// size_t i = 0;
 	// while (envp[i])
 	// {

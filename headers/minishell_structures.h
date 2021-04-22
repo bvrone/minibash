@@ -53,6 +53,7 @@ typedef struct s_cmds_pipeline
 int			keycmp(const char *s1, const char *s2);
 void		envp_to_list(t_cmds_pipeline *pipeline, char *envp[]);
 int			set_env_var(t_env_var *var, char *envp_line);
-t_env_var*	find_env_var(char *key, t_list *envp);
+t_env_var	*find_env_var(char *key, t_list *envp);
+t_env_var	*new_env_var(char *envp_line);
 
 #endif
