@@ -66,30 +66,37 @@ void	free_cmd(void *cmd)
 	cmd = NULL;
 }
 
-int		process_shline(char **symbol_matrix, t_cmds_pipeline *pipeline)
+void	clear_pipeline(char **matrix, t_cmds_pipeline *pipeline)
+{
+	ft_lstclear(&pipeline->cmds, &free_cmd);
+	if (pipeline->infile)
+	{
+		free(pipeline->infile);
+		pipeline->infile = NULL;
+	}
+	if (pipeline->outfile)
+	{
+		free(pipeline->outfile);
+		pipeline->outfile = NULL;
+	}
+}
+void	process_shline(char **symbol_matrix, t_cmds_pipeline *pipeline)
 {
 	size_t	pipeline_i;
 
 	pipeline_i = 0;
-	if (!split_to_lexemes(symbol_matrix))
-		exit(1); //syntax error
+	if (!split_to_lexemes(symbol_matrix) || !check_seprs_syntax(symbol_matrix))
+	{
+		ft_putendl_fd("syntax error", 2);
+		clear_pipeline(symbol_matrix, pipeline);
+		return;
+	}
 	while (symbol_matrix[pipeline_i])
 	{
 		parse_pipeline(symbol_matrix, &pipeline_i, pipeline);
 		ft_executor(pipeline);
-		ft_lstclear(&pipeline->cmds, &free_cmd);
-		if (pipeline->infile)
-		{
-			free(pipeline->infile);
-			pipeline->infile = NULL;
-		}
-		if (pipeline->outfile)
-		{
-			free(pipeline->outfile);
-			pipeline->outfile = NULL;
-		}
+		clear_pipeline(symbol_matrix, pipeline);
 	}
-	return (1);
 }
 
 int		main(int argc, char *argv[], char *envp[])
@@ -135,6 +142,7 @@ int		main(int argc, char *argv[], char *envp[])
 			exit(1);
 		process_shline(symbol_matrix, &pipeline);
 		free(line);
+		ft_split_clear(symbol_matrix);
 	}
 	return (0);
 }

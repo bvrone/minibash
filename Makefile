@@ -27,7 +27,7 @@ SRC_MAIN	= main.c
 SRC_PARSER	= $(addprefix $(PARSER_DIR), dollar_handler.c quotes_handler.c \
 				skip_special_symbols.c symbol_matrix_utils2.c env_utils.c \
 				pipeline_parser.c redirect_handler.c \
-				symbol_matrix_utils1.c syntax_checker.c)
+				symbol_matrix_utils1.c syntax_checker.c syntax_checker2.c)
 #SRC_GNL		= $(addprefix $(GNL_DIR), get_next_line.c get_next_line_utils.c)
 #SRC_FT_LIST	= $(addprefix $(FT_LIST_DIR), ft_lstadd_back.c ft_lstadd_front.c \
 #				ft_lstclear.c ft_lstdelone.c ft_lstfirst.c ft_lstiter.c \

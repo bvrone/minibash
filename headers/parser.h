@@ -47,5 +47,6 @@ int			get_argc(char **matrix, size_t i, size_t cmd_end);
 char		**get_argv(char **matrix, size_t *cmd_i, size_t cmd_end,
 				size_t argc);
 void		symbol_shielding(char **symbol_matrix, size_t *i);
+int			check_seprs_syntax(char **matrix);
 
 #endif
