@@ -1,0 +1,57 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   test.h                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aglady <aglady@student.21-school.>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/04/20 17:01:18 by aglady            #+#    #+#             */
+/*   Updated: 2021/04/20 17:01:20 by aglady           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef TERMCUP_H
+# define TERMCUP_H
+# include "ft_executor.h"
+# include <term.h>
+# include <termios.h>
+# include <sys/ioctl.h>
+
+typedef struct s_hist_node
+{
+	char				*data;
+	struct s_hist_node	*prev;
+	struct s_hist_node	*next;
+}	t_hist_node;
+
+typedef struct s_hist
+{
+	struct s_hist_node	*first;
+	struct s_hist_node	*last;
+	int					size;
+}				t_hist;
+
+typedef struct s_termcup
+{
+	struct termios	term;
+	struct termios	old;
+	char			*input;
+	char			*term_name;
+	char			*hist_line;
+}			t_termcup;
+
+void		hist_init(t_hist *history);
+t_hist_node	*hist_new(char *data);
+int			hist_add(t_hist *history, char *data);
+void		hist_clear(t_hist *history);
+void		hist_save(t_hist *history);
+int			termcup(t_hist *history, char **line);
+int			ft_putchar(int c);
+int			is_up_arrow(t_hist *history, char **hist_line, t_hist_node	**cur);
+int			is_down_arrow(t_hist *history, char *input, char **hist_line,
+				t_hist_node	**cur);
+int			is_new_line(t_hist *history, char **line, char **input,
+				char **hist_line);
+int			is_not_special_char(char **input, char *str);
+
+#endif
