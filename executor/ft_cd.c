@@ -83,7 +83,6 @@ int	cd_dir(t_cmds_pipeline *pipeline)
 
 int	ft_cd(t_cmds_pipeline *pipeline)
 {
-	ft_env(pipeline);
 	if (((t_command *)(pipeline->cmds->data))->argc == 1)
 	{
 		pipeline->last_ret_code = cd_home(pipeline);

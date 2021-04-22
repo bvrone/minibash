@@ -78,6 +78,16 @@ int		process_shline(char **symbol_matrix, t_cmds_pipeline *pipeline)
 		parse_pipeline(symbol_matrix, &pipeline_i, pipeline);
 		ft_executor(pipeline);
 		ft_lstclear(&pipeline->cmds, &free_cmd);
+		if (pipeline->infile)
+		{
+			free(pipeline->infile);
+			pipeline->infile = NULL;
+		}
+		if (pipeline->outfile)
+		{
+			free(pipeline->outfile);
+			pipeline->outfile = NULL;
+		}
 	}
 	return (1);
 }
