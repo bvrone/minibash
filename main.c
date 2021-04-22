@@ -12,6 +12,7 @@
 
 #include "parser.h"
 #include "ft_executor.h"
+#include "termcup.h"
 
 // void	place_var_to_matr(char **matrix, size_t *start_i, size_t end_i,
 // 			char *var)
@@ -105,6 +106,7 @@ int		main(int argc, char *argv[], char *envp[])
 	char			*line;
 	char			**symbol_matrix;
 	t_cmds_pipeline	pipeline;
+	t_hist   		history;
 
 	(void)argc;
 	(void)argv;
@@ -125,18 +127,30 @@ int		main(int argc, char *argv[], char *envp[])
 	// 	pipeline.envp = pipeline.envp->next;
 	// }
 	// return(0);
+	hist_init(&history);
 	while (1)
 	{
 		ft_putstr_fd(argv[0], 1);
 		ft_putstr_fd("$ ", 1);
-		res = get_next_line(0, &line);
+		// res = get_next_line(0, &line);
+		// if (!res)
+		// {
+		// 	ft_putstr_fd("exit\n", 1);
+		// 	return(0);
+		// }
+		// else if(res < 0)
+		// 	exit(1);//gnl error
+		res = termcup(&history, &line);
 		if (!res)
 		{
-			ft_putstr_fd("exit\n", 1);
-			return(0);
+			if (history.first)
+				hist_save(&history);
+			exit(0);
 		}
-		else if(res < 0)
-			exit(1);//gnl error
+		if (res == 2)
+			continue ;
+		if(res < 0)
+			exit(2);
 		symbol_matrix = split_line_to_matrix(line);
 		if (!symbol_matrix)
 			exit(1);
