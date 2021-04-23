@@ -37,7 +37,7 @@ typedef struct s_termcup
 	char			*term_name;
 }			t_termcup;
 
-void			hist_init(t_hist *history);
+void		hist_init(t_hist *history);
 t_hist_node	*hist_new(char *data);
 int			hist_add(t_hist *history, char *data);
 void		hist_clear(t_hist *history);
@@ -45,7 +45,7 @@ int			hist_append(char *tmp);
 int			termcup(char **line);
 int			ft_putchar(int c);
 void		is_backspace(t_hist_node **cur);
-int			is_new_line(t_hist *history, t_hist_node	**cur, char **line,
+int			is_new_line(t_hist *history, t_hist_node **cur, char **line,
 				t_termcup *ttc);
 int			is_not_special_char(char **input, char *str);
 
