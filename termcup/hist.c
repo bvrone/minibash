@@ -12,16 +12,17 @@
 
 #include "termcup.h"
 
-void	hist_init(t_hist *history)
+int	hist_init(t_hist *history)
 {
 	int		fd;
 	char	*line;
 
 	if (!history)
-		return ;
+		return (-1);
 	history->first = NULL;
 	history->last = NULL;
 	history->size = 0;
+	errno = 0;
 	fd = open("./minishell_history", O_RDONLY);
 	if (fd != -1)
 	{
@@ -31,7 +32,10 @@ void	hist_init(t_hist *history)
 				hist_add(history, line);
 		}
 		close(fd);
+		return (0);
 	}
+	ft_putendl_fd(strerror(errno), 2);
+	return (1);
 }
 
 t_hist_node	*hist_new(char *data)
@@ -55,18 +59,18 @@ int	hist_add(t_hist *history, char *data)
 
 	new_elem = hist_new(data);
 	if (!new_elem)
-		return (1);
+		return (0);
 	history->size++;
 	if (!history->first)
 	{
 		history->first = new_elem;
 		history->last = new_elem;
-		return (0);
+		return (1);
 	}
 	new_elem->prev = history->last;
 	history->last->next = new_elem;
 	history->last = new_elem;
-	return (0);
+	return (1);
 }
 
 void	hist_clear(t_hist *history)
@@ -85,26 +89,18 @@ void	hist_clear(t_hist *history)
 	history->size = 0;
 }
 
-void	hist_save(t_hist *history)
+int	hist_append(char *tmp)
 {
-	t_hist_node	*tmp;
-	int			fd;
+	int	fd;
 
 	errno = 0;
-	fd = open("./minishell_history", O_CREAT | O_WRONLY | O_TRUNC, 0655);
+	fd = open("./minishell_history", O_CREAT | O_WRONLY | O_APPEND, 0666);
 	if (fd != -1)
 	{
-		tmp = history->first;
-		while (tmp)
-		{
-			ft_putendl_fd(tmp->data, fd);
-			tmp = tmp->next;
-		}
+		ft_putendl_fd(tmp, fd);
 		close(fd);
+		return (0);
 	}
-	else
-	{
-		ft_putendl_fd(strerror(errno), 2);
-	}
-	hist_clear(history);
+	ft_putendl_fd(strerror(errno), 2);
+	return (1);
 }

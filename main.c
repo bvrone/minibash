@@ -159,7 +159,6 @@ int		main(int argc, char *argv[], char *envp[])
 	char			*line;
 	char			**symbol_matrix;
 	t_cmds_pipeline	pipeline;
-	t_hist   		history;
 
 	(void)argc;
 	(void)argv;
@@ -177,7 +176,6 @@ int		main(int argc, char *argv[], char *envp[])
 	// 	pipeline.envp = pipeline.envp->next;
 	// }
 	// return(0);
-	hist_init(&history);
 	while (1)
 	{
 		ft_putstr_fd(argv[0], 1);
@@ -190,13 +188,9 @@ int		main(int argc, char *argv[], char *envp[])
 		// }
 		// else if(res < 0)
 		// 	exit(1);//gnl error
-		res = termcup(&history, &line);
+		res = termcup(&line);
 		if (!res)
-		{
-			if (history.first)
-				hist_save(&history);
 			exit(0);
-		}
 		if(res < 0)
 			exit(2);
 		symbol_matrix = split_line_to_matrix(line);

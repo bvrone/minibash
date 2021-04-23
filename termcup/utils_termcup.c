@@ -17,82 +17,29 @@ int	ft_putchar(int c)
 	return (write(STDOUT_FILENO, &c, 1));
 }
 
-int	is_up_arrow(t_hist *history, char **hist_line, t_hist_node	**cur)
+void	is_backspace(t_hist_node **cur)
 {
-	if (!history->first)
-		return (0);
-	if (*hist_line)
+	if (ft_strlen((*cur)->data))
 	{
-		if (*cur != history->first)
-			*cur = (*cur)->prev;
-		free(*hist_line);
-		*hist_line = ft_strdup((*cur)->data);
-		if (!(*hist_line))
-			return (-1);
 		tputs(restore_cursor, 1, ft_putchar);
 		tputs(tgetstr("cd", 0), 1, ft_putchar);
+		(*cur)->data[ft_strlen((*cur)->data) - 1] = 0;
 		ft_putstr_fd((*cur)->data, 1);
 	}
-	else
-	{
-		*hist_line = ft_strdup((*cur)->data);
-		if (!(*hist_line))
-			return (-1);
-		tputs(restore_cursor, 1, ft_putchar);
-		tputs(tgetstr("cd", 0), 1, ft_putchar);
-		ft_putstr_fd((*cur)->data, 1);
-	}
-	return (0);
 }
 
-int	is_down_arrow(t_hist *history, char *input, char **hist_line,
-				t_hist_node	**cur)
+int	is_new_line(t_hist *history, t_hist_node **cur, char **line,
+			t_termcup *ttc)
 {
-	if (!history->first)
-		return (0);
-	if (*hist_line)
-	{
-		tputs(restore_cursor, 1, ft_putchar);
-		tputs(tgetstr("cd", 0), 1, ft_putchar);
-		if (*cur != history->last)
-		{
-			*cur = (*cur)->next;
-			free(*hist_line);
-			*hist_line = ft_strdup((*cur)->data);
-			if (!(*hist_line))
-				return (-1);
-			ft_putstr_fd((*cur)->data, 1);
-		}
-		else
-		{
-			free(*hist_line);
-			*hist_line = NULL;
-			ft_putstr_fd(input, 1);
-		}
-	}
-	return (0);
-}
-
-int	is_new_line(t_hist *history, char **line, char **input,
-				char **hist_line)
-{
-	if (!(*hist_line))
-	{
-		*line = ft_strdup(*input);
-		if (!(*line))
-			return (-1);
-		hist_add(history, *input);
-	}
-	else
-	{
-		*line = ft_strdup(*hist_line);
-		if (!(*line))
-			return (-1);
-		hist_add(history, *hist_line);
-	}
-	free(*input);
-	free(*hist_line);
+	tcgetattr(0, &(ttc->term));
+	ttc->term.c_lflag |= (ECHO);
+	ttc->term.c_lflag |= (ICANON);
+	tcsetattr(0, TCSANOW, &(ttc->term));
+	*line = ft_strdup((*cur)->data);
+	if (!(*line) || hist_append((*cur)->data))
+		return (-1);
 	write(1, "\n", 1);
+	hist_clear(history);
 	return (1);
 }
 
@@ -100,14 +47,18 @@ int	is_not_special_char(char **input, char *str)
 {
 	char	*tmp;
 
-	tmp = ft_strjoin(*input, str);
-	if (!tmp)
-		return (-1);
-	free(*input);
-	*input = ft_strdup(tmp);
-	if (!(*input))
-		return (-1);
-	free(tmp);
-	ft_putstr_fd(str, 1);
+	if (ft_strcmp(str, "\e[C") && ft_strcmp(str, "\e[D")
+		&& ft_strcmp(str, "\4"))
+	{
+		tmp = ft_strjoin(*input, str);
+		if (!tmp)
+			return (-1);
+		free(*input);
+		*input = ft_strdup(tmp);
+		if (!(*input))
+			return (-1);
+		free(tmp);
+		ft_putstr_fd(str, 1);
+	}
 	return (0);
 }
