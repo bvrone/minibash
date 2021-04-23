@@ -126,7 +126,7 @@ int		inc_shlvl(t_cmds_pipeline *pipeline)
 	t_env_var	*shlvl_var;
 	int			lvl;
 
-	if (!add_to_envp_if_not("SHLVL", &pipeline->envp))
+	if (!add_to_envp_if_not("SHLVL=", &pipeline->envp))
 		return (0);
 	shlvl_var = find_env_var("SHLVL", pipeline->envp);
 	if (shlvl_var->value)
@@ -135,9 +135,11 @@ int		inc_shlvl(t_cmds_pipeline *pipeline)
 		lvl++;
 		free(shlvl_var->value);
 		shlvl_var->value = ft_itoa(lvl);
-		if (!shlvl_var->value)
-			return(0);
 	}
+	else 
+		shlvl_var->value = ft_strdup("1");
+	if (!shlvl_var->value)
+		return(0);
 	return (1);
 }
 
