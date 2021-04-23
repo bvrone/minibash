@@ -55,16 +55,16 @@ char	*get_filename(char **matrix, size_t *red_i, size_t cmd_end,
 		*red_i += 1;
 	red_end = get_red_end(matrix, *red_i, cmd_end);
 	if (!set_values_in_lexemes(matrix, *red_i, red_end, pipeline))
-		return (NULL);//malloc error
+		return (NULL);
 	flname_len = get_filename_len(matrix, *red_i, red_end, pipeline);
 	file_name = malloc(flname_len + 1);
 	if (!file_name)
-		return (NULL);//malloc error
+		return (NULL);
 	i = 0;
 	while (*red_i < red_end)
 	{
 		i += ft_strlcpy(file_name + i, matrix[*red_i], flname_len + 1 - i);
-		matrix[*red_i][0] = 0;//или -1
+		matrix[*red_i][0] = 0;
 		*red_i += 1;
 	}
 	*red_i -= 1;
@@ -73,28 +73,28 @@ char	*get_filename(char **matrix, size_t *red_i, size_t cmd_end,
 
 int		set_fd(char *filename, t_cmds_pipeline *pipeline, t_fd_type fd_type)
 {
-	errno = 0;
+	int fd;
+
 	if (fd_type == in)
 	{
 		if (pipeline->fdin != -1)
 			close(pipeline->fdin);
-		pipeline->fdin = open(pipeline->infile, O_RDONLY);
+		fd = open(pipeline->infile, O_RDONLY);
+		pipeline->fdin = fd;
 	}
 	else
 	{
 		if (pipeline->fdout != -1)
 			close(pipeline->fdout);
 		if (pipeline->outfile_oflag == rewrite)
-			pipeline->fdout = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0655);
+			fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0655);
 		else
-			pipeline->fdout = open(filename, O_CREAT | O_WRONLY | O_APPEND, 0655);
+			fd = open(filename, O_CREAT | O_WRONLY | O_APPEND, 0655);
+		pipeline->fdout = fd;
 	}
-	if (errno)
-	{
+	if (fd == -1)
 		put_error(filename, strerror(errno));
-		return (-1);
-	}
-	return (1);
+	return (fd);
 }
 
 int		handle_redirect(char **matrix, size_t *i, size_t cmd_end,
