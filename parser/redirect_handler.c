@@ -75,9 +75,20 @@ int		set_fd(char *filename, t_cmds_pipeline *pipeline, t_fd_type fd_type)
 {
 	errno = 0;
 	if (fd_type == in)
+	{
+		if (pipeline->fdin != -1)
+			close(pipeline->fdin);
 		pipeline->fdin = open(pipeline->infile, O_RDONLY);
+	}
 	else
-		pipeline->fdout = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0655);
+	{
+		if (pipeline->fdout != -1)
+			close(pipeline->fdout);
+		if (pipeline->outfile_oflag == rewrite)
+			pipeline->fdout = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0655);
+		else
+			pipeline->fdout = open(filename, O_CREAT | O_WRONLY | O_APPEND, 0655);
+	}
 	if (errno)
 	{
 		put_error(filename, strerror(errno));
