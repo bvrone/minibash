@@ -12,7 +12,7 @@
 
 #include "parser.h"
 
-void	parse_cmd(char **matrix, size_t i, size_t cmd_end,
+int		parse_cmd(char **matrix, size_t i, size_t cmd_end,
 					t_cmds_pipeline *pipeline)
 {
 	while (i < cmd_end)
@@ -30,10 +30,11 @@ void	parse_cmd(char **matrix, size_t i, size_t cmd_end,
 				exit(2);//malloc error
 		}
 		else if (matrix[i][0] == '<' || matrix[i][0] == '>')
-			if (!handle_redirect(matrix, &i, cmd_end, pipeline))
-				exit(2);//malloc error
+			if (handle_redirect(matrix, &i, cmd_end, pipeline) == -1)
+				return (-1);
 		i++;
 	}
+	return (1);
 }
 
 void	set_cmd_to_pipeline(char **matrix, size_t *i, size_t cmd_end,
@@ -72,7 +73,8 @@ size_t	get_cmd_end(char **matrix, size_t i)
 	return (i);
 }
 
-void	parse_pipeline(char **symbol_matrix, size_t *cur_i, t_cmds_pipeline *pipeline)
+int		parse_pipeline(char **symbol_matrix, size_t *cur_i,
+			t_cmds_pipeline *pipeline)
 {
 	size_t cmd_end;
 
@@ -81,10 +83,12 @@ void	parse_pipeline(char **symbol_matrix, size_t *cur_i, t_cmds_pipeline *pipeli
 		if (symbol_matrix[*cur_i][0] == '|')
 			*cur_i += 1;
 		cmd_end = get_cmd_end(symbol_matrix, *cur_i);
-		parse_cmd(symbol_matrix, *cur_i, cmd_end, pipeline);
+		if (parse_cmd(symbol_matrix, *cur_i, cmd_end, pipeline) == -1)
+			return (-1);
 		set_cmd_to_pipeline(symbol_matrix, cur_i, cmd_end, pipeline);
 		*cur_i = cmd_end;
 	}
 	if (symbol_matrix[*cur_i])
 		*cur_i += 1;
+	return (1);
 }

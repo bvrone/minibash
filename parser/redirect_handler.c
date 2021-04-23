@@ -71,16 +71,29 @@ char	*get_filename(char **matrix, size_t *red_i, size_t cmd_end,
 	return (file_name);
 }
 
+int		set_fd(char *filename, t_cmds_pipeline *pipeline, t_fd_type fd_type)
+{
+	errno = 0;
+	if (fd_type == in)
+		pipeline->fdin = open(pipeline->infile, O_RDONLY);
+	else
+		pipeline->fdout = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0655);
+	if (errno)
+	{
+		put_error(filename, strerror(errno));
+		return (-1);
+	}
+	return (1);
+}
+
 int		handle_redirect(char **matrix, size_t *i, size_t cmd_end,
 							t_cmds_pipeline *pipeline)
 {
-	char	*file_name;
+	char		*file_name;
+	t_fd_type	fd_type;
 
 	if (matrix[*i][0] == '<')
-	{
-		file_name = get_filename(matrix, i, cmd_end, pipeline);
-		pipeline->infile = file_name;
-	}
+		fd_type = in;
 	else if (matrix[*i][0] == '>')
 	{
 		if (matrix[*i + 1] && matrix[*i + 1][0] == '>')
@@ -91,10 +104,10 @@ int		handle_redirect(char **matrix, size_t *i, size_t cmd_end,
 		}
 		else
 			pipeline->outfile_oflag = rewrite;
-		file_name = get_filename(matrix, i, cmd_end, pipeline);
-		pipeline->outfile = file_name;
+		fd_type = out;
 	}
+	file_name = get_filename(matrix, i, cmd_end, pipeline);
 	if (!file_name)
-		return (0);
-	return (1);
+		error_exit("Malloc", "memory allocation failed", 2);
+	return (set_fd(file_name, pipeline, fd_type));
 }
