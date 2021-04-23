@@ -18,6 +18,12 @@
 
 # include "minishell_structures.h"
 
+typedef enum e_fd_type
+{
+	in,
+	out
+}	t_fd_type;
+
 size_t		handle_dollar(char **matrix, size_t *i, t_cmds_pipeline	*pipeline);
 size_t		handle_quotes(char **matrix, size_t *i, t_cmds_pipeline *pipeline);
 size_t		handle_dquotes(char **matrix, size_t *i,
@@ -34,7 +40,7 @@ int			check_filename_syntax(char **matrix, size_t *i);
 int			check_redir_syntax(char **symbol_matrix, size_t *i);
 int			check_shielding_syntax(char **matrix, size_t *i);
 void		comment_start(char **symbol_matrix, size_t *i);
-void		parse_pipeline(char **symbol_matrix, size_t *cur_i,
+int			parse_pipeline(char **symbol_matrix, size_t *cur_i,
 				t_cmds_pipeline *pipeline);
 void		skip_spaces(char **symbol_matrix, size_t *i);
 int			skip_double_quotes(char **symbol_matrix, size_t *i);

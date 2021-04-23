@@ -28,7 +28,7 @@ LIBTERM		= -ltermcap
 SRC_MAIN	= main.c
 SRC_PARSER	= $(addprefix $(PARSER_DIR), dollar_handler.c quotes_handler.c \
 				skip_special_symbols.c symbol_matrix_utils2.c env_utils.c \
-				pipeline_parser.c redirect_handler.c \
+				pipeline_parser.c redirect_handler.c errors_handler.c \
 				symbol_matrix_utils1.c syntax_checker.c syntax_checker2.c)
 #SRC_GNL		= $(addprefix $(GNL_DIR), get_next_line.c get_next_line_utils.c)
 #SRC_FT_LIST	= $(addprefix $(FT_LIST_DIR), ft_lstadd_back.c ft_lstadd_front.c \
@@ -53,7 +53,7 @@ SRCS = $(SRC_MAIN) $(SRC_PARSER) $(SRC_EXEC) $(SRC_TERM)
 OBJS = $(OBJ_MAIN) $(OBJ_PARSER) $(OBJ_EXEC) $(OBJ_TERM)
 
 .PHONY:			all clean fclean re norm
-
+#почитать про флаг -MMD (сейчас нет зависимостей от хедеров)
 all:			$(LIBNAME) $(NAME)
 
 $(LIBNAME):
@@ -75,14 +75,14 @@ $(OBJ_MAIN):	%.o: %.c $(HEADERS)
 				$(CC) $(CFLAGS) -I$(HEADERS) -I$(LIB_DIR) -c $< -o $@
 
 %.o:%.c%$(HEADERS)
-	$(CC) $(CFLAGS) -o I$(HEADER) $@ -c $<
+	$(CC) $(CFLAGS) -o I$(HEADER) $@ -c $< 
 
 clean:
 				@rm -rf *.o
 				@rm -f $(PARSER_DIR)/*.o
 				@rm -f $(EXEC_DIR)/*.o
 				@rm -f $(TERM_DIR)/*.o
-				make -C $(LIB_DIR) clean
+				@make -C $(LIB_DIR) clean
 				@echo Objects files deleted!
 
 fclean:			clean
