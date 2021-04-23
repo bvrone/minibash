@@ -23,14 +23,12 @@ int	ft_pwd(t_cmds_pipeline *pipeline)
 	buf = getcwd(buf, size);
 	if (!buf)
 	{
-		write(2, "minishell: pwd: ", 16);
-		write(2, strerror(errno), ft_strlen(strerror(errno)));
-		write(2, "\n", 1);
+		ft_putstr_fd("minishell: pwd: ", 2);
+		ft_putendl_fd(strerror(errno), 2);
 		pipeline->last_ret_code = 1;
 		return (1);
 	}
-	write(1, buf, ft_strlen(buf));
-	write(1, "\n", 1);
+	ft_putendl_fd(buf, 1);
 	free(buf);
 	pipeline->last_ret_code = 0;
 	return (0);

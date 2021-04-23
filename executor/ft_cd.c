@@ -42,7 +42,7 @@ int	cd_home(t_cmds_pipeline *pipeline)
 	home = search_env(pipeline->envp, "HOME=");
 	if (!home || !(((t_env_var *)(home->data))->value))
 	{
-		write(2, "minishell: cd: HOME not set\n", 28);
+		ft_putendl_fd("minishell: cd: HOME not set", 2);
 		return (1);
 	}
 	pwd = search_env(pipeline->envp, "PWD=");
@@ -67,12 +67,10 @@ int	cd_dir(t_cmds_pipeline *pipeline)
 	res = chdir(((t_command *)(pipeline->cmds->data))->argv[1]);
 	if (res == -1)
 	{
-		write(2, "minishell: cd: ", 15);
-		write(2, ((t_command *)(pipeline->cmds->data))->argv[1],
-			ft_strlen(((t_command *)(pipeline->cmds->data))->argv[1]));
-		write(2, ": ", 2);
-		write(2, strerror(errno), ft_strlen(strerror(errno)));
-		write(2, "\n", 1);
+		ft_putstr_fd("minishell: cd: ", 2);
+		ft_putstr_fd(((t_command *)(pipeline->cmds->data))->argv[1], 2);
+		ft_putstr_fd(": ", 2);
+		ft_putendl_fd(strerror(errno), 2);
 		return (1);
 	}
 	set_envp(pipeline->envp, "OLDPWD=", tmp);
