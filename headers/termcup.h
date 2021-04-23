@@ -37,7 +37,7 @@ typedef struct s_termcup
 	char			*term_name;
 }			t_termcup;
 
-int			hist_init(t_hist *history);
+void			hist_init(t_hist *history);
 t_hist_node	*hist_new(char *data);
 int			hist_add(t_hist *history, char *data);
 void		hist_clear(t_hist *history);

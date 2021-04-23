@@ -12,9 +12,37 @@
 
 #include "termcup.h"
 
+int	read_hist_of_file(t_hist *history)
+{
+	int		fd;
+	int		res;
+	char	*line;
+
+	errno = 0;
+	fd = open("./minishell_history", O_RDONLY);
+	if (fd != -1)
+	{
+		while (1)
+		{
+			res = get_next_line(fd, &line);
+			if (res == -1)
+				error_exit("gnl", "reading error", 2);
+			if (ft_strlen(line))
+				hist_add(history, line);
+			free(line);
+			if (!res)
+				break ;
+		}
+		close(fd);
+		return (0);
+	}
+	return (1);
+}
+
 int	init_termcup(t_hist *history, t_termcup *ttc, t_hist_node **cur)
 {
 	hist_init(history);
+	read_hist_of_file(history);
 	if (!hist_add(history, ""))
 		exit(2);
 	*cur = history->last;
