@@ -30,6 +30,7 @@ int	hist_init(t_hist *history)
 		{
 			if (ft_strlen(line))
 				hist_add(history, line);
+			free(line);
 		}
 		close(fd);
 		return (0);
