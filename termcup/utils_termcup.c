@@ -40,6 +40,7 @@ int	is_new_line(t_hist *history, t_hist_node **cur, char **line,
 		return (-1);
 	write(1, "\n", 1);
 	hist_clear(history);
+	free(ttc->term_name);
 	return (1);
 }
 

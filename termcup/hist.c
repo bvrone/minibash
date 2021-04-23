@@ -12,30 +12,13 @@
 
 #include "termcup.h"
 
-int	hist_init(t_hist *history)
+void	hist_init(t_hist *history)
 {
-	int		fd;
-	char	*line;
-
 	if (!history)
-		return (-1);
+		return ;
 	history->first = NULL;
 	history->last = NULL;
 	history->size = 0;
-	errno = 0;
-	fd = open("./minishell_history", O_RDONLY);
-	if (fd != -1)
-	{
-		while (get_next_line(fd, &line))
-		{
-			if (ft_strlen(line))
-				hist_add(history, line);
-		}
-		close(fd);
-		return (0);
-	}
-	ft_putendl_fd(strerror(errno), 2);
-	return (1);
 }
 
 t_hist_node	*hist_new(char *data)
@@ -93,6 +76,8 @@ int	hist_append(char *tmp)
 {
 	int	fd;
 
+	if (!ft_strlen(tmp))
+		return (0);
 	errno = 0;
 	fd = open("./minishell_history", O_CREAT | O_WRONLY | O_APPEND, 0666);
 	if (fd != -1)
