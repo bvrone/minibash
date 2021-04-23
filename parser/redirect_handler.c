@@ -75,6 +75,7 @@ int		set_fd(char *filename, t_cmds_pipeline *pipeline, t_fd_type fd_type)
 {
 	int fd;
 
+	errno = 0;
 	if (fd_type == in)
 	{
 		if (pipeline->fdin != -1)
