@@ -80,6 +80,8 @@ void	clear_pipeline(char **matrix, t_cmds_pipeline *pipeline)
 		free(pipeline->outfile);
 		pipeline->outfile = NULL;
 	}
+	pipeline->fdin = -1;
+	pipeline->fdout = -1;
 }
 void	process_shline(char **symbol_matrix, t_cmds_pipeline *pipeline)
 {
@@ -94,7 +96,8 @@ void	process_shline(char **symbol_matrix, t_cmds_pipeline *pipeline)
 	}
 	while (symbol_matrix[pipeline_i])
 	{
-		parse_pipeline(symbol_matrix, &pipeline_i, pipeline);
+		if (parse_pipeline(symbol_matrix, &pipeline_i, pipeline) == -1)
+			return (clear_pipeline(symbol_matrix, pipeline));
 		ft_executor(pipeline);
 		clear_pipeline(symbol_matrix, pipeline);
 	}
@@ -145,6 +148,8 @@ void	init_vars(t_cmds_pipeline *pipeline, char *envp[])
 	pipeline->cmds = NULL;
 	pipeline->infile = NULL;
 	pipeline->outfile = NULL;
+	pipeline->fdin = -1;
+	pipeline->fdout = -1;
 	pipeline->last_ret_code = 0;
 	envp_to_list(pipeline, envp);
 	if (!add_to_envp_if_not("OLDPWD", &pipeline->envp))
