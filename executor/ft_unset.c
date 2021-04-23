@@ -74,9 +74,9 @@ int	delete_envp(t_list **envp, char *arg)
 
 	if (invalid_key(arg))
 	{
-		write(2, "minishell: unset: `", 19);
-		write(2, arg, ft_strlen(arg));
-		write(2, "': not a valid identifier\n", 26);
+		ft_putstr_fd("minishell: unset: `", 2);
+		ft_putstr_fd(arg, 2);
+		ft_putendl_fd("': not a valid identifier", 2);
 		return (1);
 	}
 	for_del = search_env(*envp, arg);

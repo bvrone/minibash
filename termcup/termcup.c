@@ -19,11 +19,9 @@ int	init_termcup(t_hist *history, t_termcup *ttc, t_hist_node **cur)
 	ttc->input = ft_strdup("");
 	if (!ttc->input)
 		return (-1);
-	tcgetattr(0, &(ttc->old));
 	tcgetattr(0, &(ttc->term));
 	ttc->term.c_lflag &= ~(ECHO);
 	ttc->term.c_lflag &= ~(ICANON);
-	ttc->term.c_lflag &= ~(ISIG);
 	tcsetattr(0, TCSANOW, &(ttc->term));
 	ttc->term_name = ft_strdup("xterm-256color");
 	if (!ttc->term_name)
@@ -56,20 +54,17 @@ int	is_up_or_down_arrow(t_hist *history, char *str, t_termcup *ttc,
 int	is_sig_or_new_line(t_hist *history, char *str, t_termcup *ttc,
 					char **line)
 {
-	if (!ft_strcmp(str, "\3"))
-	{
-		write(1, "\n", 1);
-		tcsetattr(0, TCSANOW, &(ttc->old));
-		return (2);
-	}
-	else if (!ft_strcmp(str, "\4"))
+	if (!ft_strcmp(str, "\4") && !ft_strlen(ttc->input))
 	{
 		write(1, "exit\n", 6);
 		return (0);
 	}
 	else
 	{
-		tcsetattr(0, TCSANOW, &(ttc->old));
+		tcgetattr(0, &(ttc->term));
+		ttc->term.c_lflag |= (ECHO);
+		ttc->term.c_lflag |= (ICANON);
+		tcsetattr(0, TCSANOW, &(ttc->term));
 		return (is_new_line(history, line, &(ttc->input), &(ttc->hist_line)));
 	}
 }
@@ -79,7 +74,6 @@ int	termcup_process(t_hist *history, t_termcup *ttc, t_hist_node **cur,
 {
 	char		str[2000];
 	int			k;
-	int			res;
 
 	while (1)
 	{
@@ -87,17 +81,16 @@ int	termcup_process(t_hist *history, t_termcup *ttc, t_hist_node **cur,
 		str[k] = 0;
 		if (!ft_strcmp(str, "\e[A") || !ft_strcmp(str, "\e[B"))
 		{
-			res = is_up_or_down_arrow(history, str, ttc, cur);
-			if (res == -1)
+			if (!(is_up_or_down_arrow(history, str, ttc, cur) + 1))
 				return (-1);
 		}
-		else if (!ft_strcmp(str, "\3") || !ft_strcmp(str, "\4")
+		else if ((!ft_strcmp(str, "\4") && !ft_strlen(ttc->input))
 			|| !ft_strcmp(str, "\n"))
 			return (is_sig_or_new_line(history, str, ttc, line));
-		else if (ft_strcmp(str, "\e[C") && ft_strcmp(str, "\e[D"))
+		else if (ft_strcmp(str, "\e[C") && ft_strcmp(str, "\e[D")
+			&& ft_strcmp(str, "\4"))
 		{
-			res = is_not_special_char(&(ttc->input), str);
-			if (res == -1)
+			if (!(is_not_special_char(&(ttc->input), str) + 1))
 				return (-1);
 		}
 	}

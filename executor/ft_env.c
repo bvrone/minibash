@@ -21,11 +21,10 @@ int	ft_env(t_cmds_pipeline *pipeline)
 	while (tmp)
 	{
 		cur = (t_env_var *)(tmp->data);
-		if (cur->value)
+		if (cur->value && cur->exp)
 		{
-			write(1, cur->key, ft_strlen(cur->key));
-			write(1, cur->value, ft_strlen(cur->value));
-			write(1, "\n", 1);
+			ft_putstr_fd(cur->key, 1);
+			ft_putendl_fd(cur->value, 1);
 		}
 		tmp = tmp->next;
 	}

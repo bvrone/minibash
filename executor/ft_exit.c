@@ -35,16 +35,15 @@ int	ft_exit(t_cmds_pipeline *pipeline)
 		exit(pipeline->last_ret_code);
 	if (!str_digit(((t_command *)(pipeline->cmds->data))->argv[1]))
 	{
-		write(2, "minishell: exit: ", 17);
-		write(2, ((t_command *)(pipeline->cmds->data))->argv[1],
-			ft_strlen(((t_command *)(pipeline->cmds->data))->argv[1]));
-		write(2, ": numeric argument required\n", 28);
+		ft_putstr_fd("minishell: exit: ", 2);
+		ft_putstr_fd(((t_command *)(pipeline->cmds->data))->argv[1], 2);
+		ft_putendl_fd(": numeric argument required", 2);
 		pipeline->last_ret_code = 255;
 		exit(255);
 	}
 	if (((t_command *)(pipeline->cmds->data))->argc > 2)
 	{
-		write(2, "minishell: exit: too many arguments\n", 36);
+		ft_putendl_fd("minishell: exit: too many arguments", 2);
 		pipeline->last_ret_code = 1;
 		return (1);
 	}

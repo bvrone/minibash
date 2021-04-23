@@ -22,10 +22,10 @@ void	ft_create_fdout(t_cmds_pipeline *pipeline, t_list *comm,
 		if (pipeline->outfile)
 		{
 			fd[1] = open(pipeline->outfile,
-					O_CREAT | O_WRONLY | O_TRUNC, 0655);
+					O_CREAT | O_WRONLY | O_TRUNC, 0666);
 			if (fd[1] == -1)
 			{
-				write(2, "Cannot open file.\n", 18);
+				ft_putendl_fd("Cannot open file.", 2);
 				exit(1);
 			}
 		}
@@ -75,7 +75,7 @@ int	ft_executor(t_cmds_pipeline *pipeline)
 		fd[0] = open(pipeline->infile, O_RDONLY);
 		if (fd[0] == -1)
 		{
-			write(2, "Cannot open file.\n", 18);
+			ft_putendl_fd("Cannot open file.", 2);
 			exit(1);
 		}
 	}
