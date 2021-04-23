@@ -34,7 +34,6 @@ typedef struct s_hist
 typedef struct s_termcup
 {
 	struct termios	term;
-	struct termios	old;
 	char			*input;
 	char			*term_name;
 	char			*hist_line;
