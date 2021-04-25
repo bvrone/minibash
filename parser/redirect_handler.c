@@ -80,7 +80,7 @@ int		set_fd(char *filename, t_cmds_pipeline *pipeline, t_fd_type fd_type)
 	{
 		if (pipeline->fdin != -1)
 			close(pipeline->fdin);
-		fd = open(pipeline->infile, O_RDONLY);
+		fd = open(filename, O_RDONLY);
 		pipeline->fdin = fd;
 	}
 	else
@@ -88,9 +88,9 @@ int		set_fd(char *filename, t_cmds_pipeline *pipeline, t_fd_type fd_type)
 		if (pipeline->fdout != -1)
 			close(pipeline->fdout);
 		if (pipeline->outfile_oflag == rewrite)
-			fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0655);
+			fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0666);
 		else
-			fd = open(filename, O_CREAT | O_WRONLY | O_APPEND, 0655);
+			fd = open(filename, O_CREAT | O_WRONLY | O_APPEND, 0666);
 		pipeline->fdout = fd;
 	}
 	if (fd == -1)

@@ -17,6 +17,8 @@ int	ft_exec_command(t_cmds_pipeline *pipeline, int *tmp)
 {
 	int	res;
 
+	if (!pipeline->cmds)
+		return (0);
 	if (!pipeline->cmds->next)
 	{
 		if (pipeline->fdin != -1)
@@ -49,5 +51,7 @@ int	ft_executor(t_cmds_pipeline *pipeline)
 	dup2(tmp[1], 1);
 	close(tmp[0]);
 	close(tmp[1]);
+	pipeline->fdin = -1;
+	pipeline->fdout = -1;
 	return (res);
 }
