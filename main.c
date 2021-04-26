@@ -185,8 +185,7 @@ int		main(int argc, char *argv[], char *envp[])
 	// return(0);
 	while (1)
 	{
-		ft_putstr_fd(argv[0], 1);
-		ft_putstr_fd("$ ", 1);
+		ft_putstr_fd("minishell$ ", 1);
 		// res = get_next_line(0, &line);
 		// if (!res)
 		// {

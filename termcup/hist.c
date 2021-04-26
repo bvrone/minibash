@@ -79,7 +79,7 @@ int	hist_append(char *tmp)
 	if (!ft_strlen(tmp))
 		return (0);
 	errno = 0;
-	fd = open("./minishell_history", O_CREAT | O_WRONLY | O_APPEND, 0666);
+	fd = open("/Users/Shared/minishell_history", O_CREAT | O_WRONLY | O_APPEND, 0666);
 	if (fd != -1)
 	{
 		ft_putendl_fd(tmp, fd);

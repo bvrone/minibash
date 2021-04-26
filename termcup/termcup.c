@@ -19,7 +19,7 @@ int	read_hist_of_file(t_hist *history)
 	char	*line;
 
 	errno = 0;
-	fd = open("./minishell_history", O_RDONLY);
+	fd = open("/Users/Shared/minishell_history", O_RDONLY);
 	if (fd != -1)
 	{
 		while (1)
