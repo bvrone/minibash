@@ -18,15 +18,15 @@
 # include "minishell_structures.h"
 
 int			ft_executor(t_cmds_pipeline *pipeline);
-int			execute_builtins(t_cmds_pipeline *pipeline);
-void		execute_not_builtins(t_cmds_pipeline *pipeline);
-int			ft_echo(t_cmds_pipeline *pipeline);
-int			ft_cd(t_cmds_pipeline *pipeline);
-int			ft_pwd(t_cmds_pipeline *pipeline);
-int			ft_export(t_cmds_pipeline *pipeline);
-int			ft_unset(t_cmds_pipeline *pipeline);
-int			ft_env(t_cmds_pipeline *pipeline);
-int			ft_exit(t_cmds_pipeline *pipeline);
+int			execute_builtins(t_cmds_pipeline *pipeline, t_list *cmds);
+void		execute_not_builtins(t_cmds_pipeline *pipeline, t_list *cmds);
+int			ft_echo(t_cmds_pipeline *pipeline, t_list *cmds);
+int			ft_cd(t_cmds_pipeline *pipeline, t_list *cmds);
+int			ft_pwd(t_cmds_pipeline *pipeline, t_list *cmds);
+int			ft_export(t_cmds_pipeline *pipeline, t_list *cmds);
+int			ft_unset(t_cmds_pipeline *pipeline, t_list *cmds);
+int			ft_env(t_cmds_pipeline *pipeline, t_list *cmds);
+int			ft_exit(t_cmds_pipeline *pipeline, t_list *cmds);
 char		**list_to_envp(t_list *list_envp);
 t_env_var	*new_env_var(char *envp_line);
 t_list		*search_env(t_list *envp, const char *key);

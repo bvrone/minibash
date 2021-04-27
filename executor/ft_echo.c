@@ -12,25 +12,25 @@
 
 #include "ft_executor.h"
 
-int	ft_echo(t_cmds_pipeline *pipeline)
+int	ft_echo(t_cmds_pipeline *pipeline, t_list *cmds)
 {
 	int	i;
 	int	is_not_n;
 
 	is_not_n = 1;
-	if (((t_command *)(pipeline->cmds->data))->argc > 1)
+	if (((t_command *)(cmds->data))->argc > 1)
 	{
-		is_not_n = ft_strcmp(((t_command *)(pipeline->cmds->data))->argv[1],
+		is_not_n = ft_strcmp(((t_command *)(cmds->data))->argv[1],
 				"-n");
 		i = 1;
-		while (!ft_strcmp(((t_command *)(pipeline->cmds->data))->argv[i],
+		while (!ft_strcmp(((t_command *)(cmds->data))->argv[i],
 			"-n"))
 			i++;
-		while (i < ((t_command *)(pipeline->cmds->data))->argc)
+		while (i < ((t_command *)(cmds->data))->argc)
 		{
-			write(1, ((t_command *)(pipeline->cmds->data))->argv[i],
-				ft_strlen(((t_command *)(pipeline->cmds->data))->argv[i]));
-			if (i < ((t_command *)(pipeline->cmds->data))->argc - 1)
+			write(1, ((t_command *)(cmds->data))->argv[i],
+				ft_strlen(((t_command *)(cmds->data))->argv[i]));
+			if (i < ((t_command *)(cmds->data))->argc - 1)
 				write(1, " ", 1);
 			i++;
 		}

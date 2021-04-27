@@ -12,11 +12,12 @@
 
 #include "ft_executor.h"
 
-int	ft_pwd(t_cmds_pipeline *pipeline)
+int	ft_pwd(t_cmds_pipeline *pipeline, t_list *cmds)
 {
 	char	*buf;
 	size_t	size;
 
+	(void)cmds;
 	size = 100;
 	buf = NULL;
 	errno = 0;

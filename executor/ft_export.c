@@ -161,23 +161,23 @@ int	insert_env(t_list *envp, char *arg)
 	return (0);
 }
 
-int	ft_export(t_cmds_pipeline *pipeline)
+int	ft_export(t_cmds_pipeline *pipeline, t_list *cmds)
 {
 	int	i;
 	int	res;
 
 	res = 0;
-	if (((t_command *)(pipeline->cmds->data))->argc == 1)
+	if (((t_command *)(cmds->data))->argc == 1)
 	{
 		show_export(pipeline->envp);
 	}
 	else
 	{
 		i = 0;
-		while (++i < ((t_command *)(pipeline->cmds->data))->argc)
+		while (++i < ((t_command *)(cmds->data))->argc)
 		{
 			res = insert_env(pipeline->envp, ((t_command *)
-						(pipeline->cmds->data))->argv[i]);
+						(cmds->data))->argv[i]);
 			if (res)
 				break ;
 		}

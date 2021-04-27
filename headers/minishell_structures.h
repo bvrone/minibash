@@ -44,8 +44,6 @@ typedef struct s_cmds_pipeline
 {
 	t_list		*cmds;
 	t_list		*envp;
-	char		*infile;
-	char		*outfile;
 	int			fdin;
 	int			fdout;
 	int			last_ret_code;

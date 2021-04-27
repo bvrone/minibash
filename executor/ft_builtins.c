@@ -42,17 +42,17 @@ void	init_builtins(int (*builtins[7])())
 	builtins[6] = ft_exit;
 }
 
-int	execute_builtins(t_cmds_pipeline *pipeline)
+int	execute_builtins(t_cmds_pipeline *pipeline, t_list *cmds)
 {
 	int	num_command;
 	int	res;
 	int	(*builtins[7])();
-
+	
 	init_builtins(builtins);
 	num_command = ft_is_builtins(
-			((t_command *)(pipeline->cmds->data))->argv[0]);
+			((t_command *)(cmds->data))->argv[0]);
 	if (num_command == -1)
 		return (-1);
-	res = builtins[num_command](pipeline);
+	res = builtins[num_command](pipeline, cmds);
 	return (res);
 }

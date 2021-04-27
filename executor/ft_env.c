@@ -12,11 +12,12 @@
 
 #include "ft_executor.h"
 
-int	ft_env(t_cmds_pipeline *pipeline)
+int	ft_env(t_cmds_pipeline *pipeline, t_list *cmds)
 {
 	t_list		*tmp;
 	t_env_var	*cur;
 
+	(void)cmds;
 	tmp = pipeline->envp;
 	while (tmp)
 	{

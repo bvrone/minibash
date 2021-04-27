@@ -89,21 +89,21 @@ int	delete_envp(t_list **envp, char *arg)
 	return (0);
 }
 
-int	ft_unset(t_cmds_pipeline *pipeline)
+int	ft_unset(t_cmds_pipeline *pipeline, t_list *cmds)
 {
 	int	i;
 	int	res;
 
 	res = 0;
-	if (((t_command *)(pipeline->cmds->data))->argc > 1)
+	if (((t_command *)(cmds->data))->argc > 1)
 	{
 		i = 0;
-		while (++i < ((t_command *)(pipeline->cmds->data))->argc)
+		while (++i < ((t_command *)(cmds->data))->argc)
 		{
 			if (!pipeline->envp)
 				return (1);
 			res = delete_envp(&pipeline->envp, ((t_command *)
-						(pipeline->cmds->data))->argv[i]);
+						(cmds->data))->argv[i]);
 			if (res)
 				break ;
 		}

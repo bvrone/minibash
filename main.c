@@ -70,16 +70,6 @@ void	free_cmd(void *cmd)
 void	clear_pipeline(char **matrix, t_cmds_pipeline *pipeline)
 {
 	ft_lstclear(&pipeline->cmds, &free_cmd);
-	if (pipeline->infile)
-	{
-		free(pipeline->infile);
-		pipeline->infile = NULL;
-	}
-	if (pipeline->outfile)
-	{
-		free(pipeline->outfile);
-		pipeline->outfile = NULL;
-	}
 	pipeline->fdin = -1;
 	pipeline->fdout = -1;
 }
@@ -148,8 +138,6 @@ void	init_vars(t_cmds_pipeline *pipeline, char *envp[])
 	int			res;
 
 	pipeline->cmds = NULL;
-	pipeline->infile = NULL;
-	pipeline->outfile = NULL;
 	pipeline->fdin = -1;
 	pipeline->fdout = -1;
 	pipeline->last_ret_code = 0;

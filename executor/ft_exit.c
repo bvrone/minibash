@@ -28,26 +28,26 @@ int	str_digit(char *str)
 	return (1);
 }
 
-int	ft_exit(t_cmds_pipeline *pipeline)
+int	ft_exit(t_cmds_pipeline *pipeline, t_list *cmds)
 {
 	write(1, "exit\n", 5);
-	if (((t_command *)(pipeline->cmds->data))->argc == 1)
+	if (((t_command *)(cmds->data))->argc == 1)
 		exit(pipeline->last_ret_code);
-	if (!str_digit(((t_command *)(pipeline->cmds->data))->argv[1]))
+	if (!str_digit(((t_command *)(cmds->data))->argv[1]))
 	{
 		ft_putstr_fd("minishell: exit: ", 2);
-		ft_putstr_fd(((t_command *)(pipeline->cmds->data))->argv[1], 2);
+		ft_putstr_fd(((t_command *)(cmds->data))->argv[1], 2);
 		ft_putendl_fd(": numeric argument required", 2);
 		pipeline->last_ret_code = 255;
 		exit(255);
 	}
-	if (((t_command *)(pipeline->cmds->data))->argc > 2)
+	if (((t_command *)(cmds->data))->argc > 2)
 	{
 		ft_putendl_fd("minishell: exit: too many arguments", 2);
 		pipeline->last_ret_code = 1;
 		return (1);
 	}
 	pipeline->last_ret_code = (unsigned char)
-		ft_atoi(((t_command *)(pipeline->cmds->data))->argv[1]);
+		ft_atoi(((t_command *)(cmds->data))->argv[1]);
 	return (pipeline->last_ret_code);
 }

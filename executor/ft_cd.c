@@ -57,18 +57,18 @@ int	cd_home(t_cmds_pipeline *pipeline)
 	return (0);
 }
 
-int	cd_dir(t_cmds_pipeline *pipeline)
+int	cd_dir(t_cmds_pipeline *pipeline, t_list *cmds)
 {
 	int		res;
 	char	*tmp;
 
 	errno = 0;
 	tmp = get_pwd();
-	res = chdir(((t_command *)(pipeline->cmds->data))->argv[1]);
+	res = chdir(((t_command *)(cmds->data))->argv[1]);
 	if (res == -1)
 	{
 		ft_putstr_fd("minishell: cd: ", 2);
-		ft_putstr_fd(((t_command *)(pipeline->cmds->data))->argv[1], 2);
+		ft_putstr_fd(((t_command *)(cmds->data))->argv[1], 2);
 		ft_putstr_fd(": ", 2);
 		ft_putendl_fd(strerror(errno), 2);
 		return (1);
@@ -79,15 +79,15 @@ int	cd_dir(t_cmds_pipeline *pipeline)
 	return (0);
 }
 
-int	ft_cd(t_cmds_pipeline *pipeline)
+int	ft_cd(t_cmds_pipeline *pipeline, t_list *cmds)
 {
-	if (((t_command *)(pipeline->cmds->data))->argc == 1)
+	if (((t_command *)(cmds->data))->argc == 1)
 	{
 		pipeline->last_ret_code = cd_home(pipeline);
 		return (pipeline->last_ret_code);
 	}
 // 	if (!ft_strcmp(((t_command *)(pipeline->cmds->data))->argv[1], "-"))
 // 		return (cd_minus(pipeline));
-	pipeline->last_ret_code = cd_dir(pipeline);
+	pipeline->last_ret_code = cd_dir(pipeline, cmds);
 	return (pipeline->last_ret_code);
 }
