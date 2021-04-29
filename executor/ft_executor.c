@@ -64,41 +64,50 @@ int	exec_pipeline(t_cmds_pipeline *pipeline, int *tmp)
 		if (pipe(pipe_fd[i]) < 0)
 			return (1);
 	}
-	if (pipeline->fdin != -1)
-		dup2(pipeline->fdin, 0);
-	else
-		dup2(tmp[0], 0);
-	dup2(pipe_fd[0][1], 1);
-	res = execute_builtins(pipeline, pipeline->cmds);
-	if (res == -1)
-		execute_not_builtins(pipeline, pipeline->cmds);
-	if (pipeline->fdin != -1)
-		close(pipeline->fdin);
-	close(pipe_fd[0][1]);
-	i = 0;
-	while (++i < n - 1)
+
+	i = -1;
+	while (++i < n)
 	{
-		dup2(pipe_fd[i - 1][0], 0);
-		dup2(pipe_fd[i][1], 1);
+	
+		if (i == 0)
+		{
+			if (pipeline->fdin != -1)
+				dup2(pipeline->fdin, 0);
+			else
+				dup2(tmp[0], 0);
+		}
+		else
+			dup2(pipe_fd[i - 1][0], 0);
+
+		if (i == n - 1)
+		{
+			if (pipeline->fdout != -1)
+				dup2(pipeline->fdout, 1);
+			else
+				dup2(tmp[1], 1);
+		}
+		else
+			dup2(pipe_fd[i][1], 1);
 		res = execute_builtins(pipeline, ft_lstind(pipeline->cmds, i));
 		if (res == -1)
 			execute_not_builtins(pipeline, ft_lstind(pipeline->cmds, i));
-		close(pipe_fd[i - 1][0]);
-		close(pipe_fd[i][1]);
+		if (i == 0)
+		{
+			if (pipeline->fdin != -1)
+				close(pipeline->fdin);
+		}
+		else
+			close(pipe_fd[i - 1][0]);
+		if (i == n - 1)
+		{
+			if (pipeline->fdout != -1)
+				close(pipeline->fdout);
+		}
+		else
+			close(pipe_fd[i][1]);
 	}
-	dup2(pipe_fd[n - 2][0], 0);
-	if (pipeline->fdout != -1)
-		dup2(pipeline->fdout, 1);
-	else
-		dup2(tmp[1], 1);
-	res = execute_builtins(pipeline, ft_lstind(pipeline->cmds, n - 1));
-	if (res == -1)
-		execute_not_builtins(pipeline, ft_lstind(pipeline->cmds, n - 1));
-	close(pipe_fd[n - 2][0]);
-	if (pipeline->fdout != -1)
-		close(pipeline->fdout);
 	i = -1;
-	while (++i < n)
+	while (++i < n - 1)
 		free(pipe_fd[i]);
 	free(pipe_fd);
 	return (pipeline->last_ret_code);
