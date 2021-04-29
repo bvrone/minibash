@@ -73,8 +73,7 @@ void	execute_not_builtins(t_cmds_pipeline *pipeline, t_list *cmds)
 				free(((t_command *)(cmds->data))->argv[0]);
 			}
 			if (res == -1)
-				error_exit(((t_command *)(cmds->data))->argv[0],
-					"command not found", 2);
+				error_exit(argv0, "command not found", 2);
 		}
 		
 	}

@@ -92,17 +92,11 @@ int	exec_pipeline(t_cmds_pipeline *pipeline, int *tmp)
 		if (res == -1)
 			execute_not_builtins(pipeline, ft_lstind(pipeline->cmds, i));
 		if (i == 0)
-		{
-			if (pipeline->fdin != -1)
-				close(pipeline->fdin);
-		}
+			close(pipeline->fdin);
 		else
 			close(pipe_fd[i - 1][0]);
 		if (i == n - 1)
-		{
-			if (pipeline->fdout != -1)
-				close(pipeline->fdout);
-		}
+			close(pipeline->fdout);
 		else
 			close(pipe_fd[i][1]);
 	}
