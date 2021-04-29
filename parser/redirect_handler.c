@@ -103,6 +103,7 @@ int		handle_redirect(char **matrix, size_t *i, size_t cmd_end,
 {
 	char		*file_name;
 	t_fd_type	fd_type;
+	int			res;
 
 	if (matrix[*i][0] == '<')
 		fd_type = in;
@@ -121,5 +122,8 @@ int		handle_redirect(char **matrix, size_t *i, size_t cmd_end,
 	file_name = get_filename(matrix, i, cmd_end, pipeline);
 	if (!file_name)
 		error_exit("Malloc", "memory allocation failed", 2);
-	return (set_fd(file_name, pipeline, fd_type));
+	res = set_fd(file_name, pipeline, fd_type);
+	free(file_name);
+	close(-325354);
+	return (res);
 }
