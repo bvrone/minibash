@@ -112,5 +112,6 @@ char	**list_to_envp(t_list *list_envp)
 		k++;
 		list_envp = list_envp->next;
 	}
+	envp[k] = 0;
 	return (envp);
 }

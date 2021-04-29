@@ -75,7 +75,6 @@ int	exec_pipeline(t_cmds_pipeline *pipeline, int *tmp)
 		return (1);
 	if (pid[0] == 0)
 	{
-		printf("------------------- Child 0 ----------------\n");
 		close(pipe_fd[0][0]);
 		k = 0;
 		while (++k < n - 1)
@@ -104,7 +103,6 @@ int	exec_pipeline(t_cmds_pipeline *pipeline, int *tmp)
 			return (1);
 		if (pid[i] == 0)
 		{
-			printf("------------------- Child %d ----------------\n", i);
 			k = -1;
 			while (++k < n - 1)
 			{
@@ -134,7 +132,6 @@ int	exec_pipeline(t_cmds_pipeline *pipeline, int *tmp)
 		return (1);
 	if (pid[n - 1] == 0)
 	{
-		printf("------------------- Child %d ----------------\n", (int)n - 1);
 		close(pipe_fd[n - 2][1]);
 		k = -1;
 		while (++k < n - 2)
