@@ -21,7 +21,7 @@ LIB_DIR		=	./libft/
 LIBNAME		=	-lft
 LIBTERM		=	-ltermcap
 
-SRC_MAIN	= main.c
+SRC_MAIN	= main.c utils_for_main.c
 SRC_PARSER	= $(addprefix $(PARSER_DIR), dollar_handler.c quotes_handler.c \
 				skip_special_symbols.c symbol_matrix_utils2.c env_utils.c \
 				pipeline_parser.c redirect_handler.c errors_handler.c \
@@ -80,4 +80,4 @@ fclean:			clean
 re:				fclean all
 
 norm:
-				norminette $(SRCS) $(HEADERS)
+				norminette $(SRCS) $(HEADERS) $(LIB_DIR)

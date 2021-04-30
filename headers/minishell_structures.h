@@ -57,5 +57,8 @@ t_env_var	*find_env_var(char *key, t_list *envp);
 t_env_var	*new_env_var(char *envp_line);
 void		error_exit(char *target, char *msg, int ret_code);
 void		put_error(char *target, char *msg);
+void		clear_pipeline(t_cmds_pipeline *pipeline);
+int			add_to_envp_if_not(char *key, t_list **envp);
+int			inc_shlvl(t_cmds_pipeline *pipeline);
 
 #endif
