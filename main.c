@@ -78,7 +78,10 @@ void	main_loop(t_cmds_pipeline *pipeline)
 		if (res < 0)
 			exit(2);
 		if (res == 2)
+		{
+			pipeline->last_ret_code = 1;
 			continue ;
+		}
 		symbol_matrix = split_line_to_matrix(line);
 		if (!symbol_matrix)
 			exit(1);

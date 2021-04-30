@@ -44,7 +44,7 @@ int	init_termcup(t_hist *history, t_termcup *ttc, t_hist_node **cur)
 	hist_init(history);
 	read_hist_of_file(history);
 	if (!hist_add(history, ""))
-		exit(2);
+		exit(3);
 	*cur = history->last;
 	tcgetattr(0, &(ttc->term));
 	ttc->term.c_lflag &= ~(ECHO);

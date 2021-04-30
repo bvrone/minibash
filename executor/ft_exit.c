@@ -30,7 +30,7 @@ int	str_digit(char *str)
 
 int	ft_exit(t_cmds_pipeline *pipeline, t_list *cmds)
 {
-	write(1, "exit\n", 5);
+	ft_putendl_fd("exit", 1);
 	if (((t_command *)(cmds->data))->argc == 1)
 		exit(pipeline->last_ret_code);
 	if (!str_digit(((t_command *)(cmds->data))->argv[1]))
