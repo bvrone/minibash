@@ -12,7 +12,7 @@
 
 #include "ft_executor.h"
 
-void	exec_with_path(t_cmds_pipeline *pipeline, t_list *cmds, char **envp)
+void	exec_with_path(t_list *cmds, char **envp)
 {
 	int	res;
 
@@ -89,7 +89,7 @@ void	execute_not_builtins(t_cmds_pipeline *pipeline, t_list *cmds)
 		if (((t_command *)(cmds->data))->argv[0][0] == '.'
 		|| ((t_command *)(cmds->data))->argv[0][0] == '/'
 		|| ((t_command *)(cmds->data))->argv[0][0] == '~')
-			exec_with_path(pipeline, cmds, envp);
+			exec_with_path(cmds, envp);
 		else
 			exec_not_path(pipeline, cmds, envp);
 	}
