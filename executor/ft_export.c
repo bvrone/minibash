@@ -39,21 +39,10 @@ int	replace_env(t_env_var *var, t_list *new_lst)
 	return (0);
 }
 
-int	insert_env(t_list *envp, char *arg)
+int	insert_new_lst(t_list *envp, char *arg, t_env_var *var)
 {
-	t_env_var	*var;
-	t_list		*new_lst;
+	t_list	*new_lst;
 
-	if (!ft_strcmp(arg, "PWD") && !search_env(envp, "PWD"))
-	{
-		free(arg);
-		arg = ft_strjoin("PWD=", get_pwd());
-		if (!arg)
-			return (1);
-	}
-	var = new_env_var(arg);
-	if (!check_var(var))
-		return (1);
 	new_lst = search_env(envp, var->key);
 	if (!ft_strcmp(arg, "OLDPWD") && new_lst)
 	{
@@ -70,6 +59,23 @@ int	insert_env(t_list *envp, char *arg)
 	else
 		return (replace_env(var, new_lst));
 	return (0);
+}
+
+int	insert_env(t_list *envp, char *arg)
+{
+	t_env_var	*var;
+
+	if (!ft_strcmp(arg, "PWD") && !search_env(envp, "PWD"))
+	{
+		free(arg);
+		arg = ft_strjoin("PWD=", get_pwd());
+		if (!arg)
+			return (1);
+	}
+	var = new_env_var(arg);
+	if (!check_var(var))
+		return (1);
+	return (insert_new_lst(envp, arg, var));
 }
 
 int	ft_export(t_cmds_pipeline *pipeline, t_list *cmds)

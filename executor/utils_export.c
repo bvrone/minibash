@@ -28,21 +28,27 @@ int	keycmp(const char *s1, const char *s2)
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
 
-void	sort_env(t_list *list_envp, t_list **sort_list)
+void	add_in_sort_list(t_list **sort_list, t_env_var *var)
 {
 	t_list		*tmp;
 	t_list		*new_item;
+
+	tmp = *sort_list;
+	while (tmp->next && (keycmp(var->key,
+				((t_env_var *)(tmp->next->data))->key) > 0))
+		tmp = tmp->next;
+	new_item = ft_lstnew(var);
+	if (!new_item)
+		error_exit("malloc", "Memory allocation error", 2);
+	new_item->next = tmp->next;
+	tmp->next = new_item;
+}
+
+void	sort_process(t_list *list_envp, t_list **sort_list)
+{
+	t_list		*new_item;
 	t_env_var	*var;
 
-	if (!list_envp)
-		*sort_list = NULL;
-	*sort_list = ft_lstnew((t_env_var *)(list_envp->data));
-	if (!(*sort_list))
-	{
-		write(1, "minishell: Memory allocation error\n", 35);
-		exit(1);
-	}
-	list_envp = list_envp->next;
 	while (list_envp)
 	{
 		var = (t_env_var *)(list_envp->data);
@@ -50,29 +56,24 @@ void	sort_env(t_list *list_envp, t_list **sort_list)
 		{
 			new_item = ft_lstnew(var);
 			if (!new_item)
-			{
-				write(1, "minishell: Memory allocation error\n", 35);
-				exit(1);
-			}
+				error_exit("malloc", "Memory allocation error", 2);
 			ft_lstadd_front(sort_list, new_item);
 		}
 		else
-		{
-			tmp = *sort_list;
-			while (tmp->next && (keycmp(var->key,
-						((t_env_var *)(tmp->next->data))->key) > 0))
-				tmp = tmp->next;
-			new_item = ft_lstnew(var);
-			if (!new_item)
-			{
-				write(1, "minishell: Memory allocation error\n", 35);
-				exit(1);
-			}
-			new_item->next = tmp->next;
-			tmp->next = new_item;
-		}
+			add_in_sort_list(sort_list, var);
 		list_envp = list_envp->next;
 	}
+}
+
+void	sort_env(t_list *list_envp, t_list **sort_list)
+{
+	if (!list_envp)
+		*sort_list = NULL;
+	*sort_list = ft_lstnew((t_env_var *)(list_envp->data));
+	if (!(*sort_list))
+		error_exit("malloc", "Memory allocation error", 2);
+	list_envp = list_envp->next;
+	sort_process(list_envp, sort_list);
 }
 
 void	show_export(t_list *envp)
