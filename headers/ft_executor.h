@@ -34,5 +34,6 @@ int			insert_env(t_list *envp, char *arg);
 int			invalid_key(char *key);
 void		show_export(t_list *envp);
 char		*get_pwd(void);
+int			exec_pipeline(t_cmds_pipeline *pipeline, int *tmp);
 
 #endif

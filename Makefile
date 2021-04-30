@@ -36,7 +36,8 @@ SRC_PARSER	= $(addprefix $(PARSER_DIR), dollar_handler.c quotes_handler.c \
 #				ft_lstlast.c ft_lstmap.c ft_lstnew.c ft_lstsize.c)
 SRC_EXEC	= $(addprefix $(EXEC_DIR), ft_builtins.c ft_cd.c ft_echo.c \
 				ft_env.c ft_executor.c ft_exit.c ft_export.c \
-				ft_not_builtins.c ft_pwd.c ft_unset.c)
+				ft_not_builtins.c ft_pwd.c ft_unset.c exec_pipe.c \
+				utils_export.c)
 SRC_TERM	= $(addprefix $(TERM_DIR), termcup.c utils_termcup.c hist.c)
 
 OBJ_MAIN	= $(SRC_MAIN:.c=.o)

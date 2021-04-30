@@ -14,37 +14,6 @@
 #include "ft_executor.h"
 #include "termcup.h"
 
-// void	place_var_to_matr(char **matrix, size_t *start_i, size_t end_i,
-// 			char *var)
-// {
-// 	free(matrix[*start_i]);
-// 	matrix[*start_i] = var;
-// 	*start_i += 1;
-// 	while (*start_i <= end_i)
-// 	{
-// 		matrix[*start_i][0] = 0;
-// 		*start_i += 1;
-// 	}
-// }
-
-// int	get_fd(char **matrix, size_t *red_i, size_t cmd_end,
-// 			t_cmds_pipeline	*pipeline)
-// {
-// 	int	fd;
-// 	char *file_name;
-
-// 	matrix[*red_i][0] = -1;
-// 	while (matrix[*red_i][0] == -1)
-// 		*red_i += 1;
-// 	file_name = get_filename(matrix, red_i, cmd_end, pipeline);
-// 	fd = open(pipeline->infile, O_RDONLY);
-// 	if (fdin == -1)
-// 	{
-// 		write(2, "Cannot open file.\n", 18);
-// 		exit(1);
-//     }
-// }
-
 void	free_cmd(void *cmd)
 {
 	ft_split_clear(((t_command *)cmd)->argv);
@@ -52,7 +21,7 @@ void	free_cmd(void *cmd)
 	cmd = NULL;
 }
 
-void	clear_pipeline(char **matrix, t_cmds_pipeline *pipeline)
+void	clear_pipeline(t_cmds_pipeline *pipeline)
 {
 	ft_lstclear(&pipeline->cmds, &free_cmd);
 	pipeline->fdin = -1;
@@ -66,15 +35,15 @@ void	process_shline(char **symbol_matrix, t_cmds_pipeline *pipeline)
 	if (!split_to_lexemes(symbol_matrix) || !check_seprs_syntax(symbol_matrix))
 	{
 		ft_putendl_fd("syntax error", 2);
-		clear_pipeline(symbol_matrix, pipeline);
+		clear_pipeline(pipeline);
 		return;
 	}
 	while (symbol_matrix[pipeline_i])
 	{
 		if (parse_pipeline(symbol_matrix, &pipeline_i, pipeline) == -1)
-			return (clear_pipeline(symbol_matrix, pipeline));
+			return (clear_pipeline(pipeline));
 		ft_executor(pipeline);
-		clear_pipeline(symbol_matrix, pipeline);
+		clear_pipeline(pipeline);
 	}
 }
 
@@ -120,8 +89,6 @@ int		inc_shlvl(t_cmds_pipeline *pipeline)
 
 void	init_vars(t_cmds_pipeline *pipeline, char *envp[])
 {
-	int			res;
-
 	pipeline->cmds = NULL;
 	pipeline->fdin = -1;
 	pipeline->fdout = -1;
