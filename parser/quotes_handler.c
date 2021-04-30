@@ -12,10 +12,10 @@
 
 #include "parser.h"
 
-size_t		handle_dquotes(char **matrix, size_t *i,  t_cmds_pipeline *pipeline)
+size_t	handle_dquotes(char **matrix, size_t *i, t_cmds_pipeline *pipeline)
 {
-	size_t skipd_symb_cnt;
-	size_t res;
+	size_t	skipd_symb_cnt;
+	size_t	res;
 
 	*i += 1;
 	skipd_symb_cnt = 1;
@@ -27,7 +27,7 @@ size_t		handle_dquotes(char **matrix, size_t *i,  t_cmds_pipeline *pipeline)
 		{
 			res = handle_dollar(matrix, i, pipeline);
 			if (!res)
-				return(0);//malloc error
+				return (0);
 			skipd_symb_cnt += res;
 		}
 		*i += 1;
@@ -36,10 +36,10 @@ size_t		handle_dquotes(char **matrix, size_t *i,  t_cmds_pipeline *pipeline)
 	return (skipd_symb_cnt);
 }
 
-size_t		handle_quotes(char **matrix, size_t *i, t_cmds_pipeline *pipeline)
+size_t	handle_quotes(char **matrix, size_t *i, t_cmds_pipeline *pipeline)
 {
 	size_t	res;
-	
+
 	res = 1;
 	if (matrix[*i][0] == '\'')
 	{

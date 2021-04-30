@@ -33,7 +33,7 @@ char	*get_key_from_m(char **matrix, size_t key_start, size_t key_len)
 
 size_t	env_value_to_m(char **matrix, size_t *dollar_i, t_env_var *env_var)
 {
-	char *value;
+	char	*value;
 
 	value = ft_strdup(env_var->value);
 	if (!value)
@@ -45,7 +45,7 @@ size_t	env_value_to_m(char **matrix, size_t *dollar_i, t_env_var *env_var)
 
 void	*clear_matrix(char **matrix, size_t count)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (i < count)
@@ -79,9 +79,9 @@ char	**split_line_to_matrix(char *line)
 	return (symbol_matrix);
 }
 
-int		split_to_lexemes(char **matrix)
+int	split_to_lexemes(char **matrix)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (matrix[i])

@@ -21,7 +21,7 @@ void	skip_spaces(char **symbol_matrix, size_t *i)
 	}
 }
 
-int		skip_double_quotes(char **symbol_matrix, size_t *i)
+int	skip_double_quotes(char **symbol_matrix, size_t *i)
 {
 	*i += 1;
 	if (!symbol_matrix[*i])
@@ -37,10 +37,10 @@ int		skip_double_quotes(char **symbol_matrix, size_t *i)
 	return (1);
 }
 
-size_t		skip_apostrophe(char **symbol_matrix, size_t *i)
+size_t	skip_apostrophe(char **symbol_matrix, size_t *i)
 {
-	size_t skipd_symb_cnt;
-	
+	size_t	skipd_symb_cnt;
+
 	*i += 1;
 	skipd_symb_cnt = 1;
 	if (!symbol_matrix[*i])
@@ -55,7 +55,7 @@ size_t		skip_apostrophe(char **symbol_matrix, size_t *i)
 	return (skipd_symb_cnt);
 }
 
-size_t		skip_quotes(char **symbol_matrix, size_t *i)
+size_t	skip_quotes(char **symbol_matrix, size_t *i)
 {
 	if (symbol_matrix[*i][0] == '\'')
 		return (skip_apostrophe(symbol_matrix, i));

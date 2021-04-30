@@ -12,8 +12,8 @@
 
 #include "parser.h"
 
-int		parse_cmd(char **matrix, size_t i, size_t cmd_end,
-					t_cmds_pipeline *pipeline)
+int	parse_cmd(char **matrix, size_t i, size_t cmd_end,
+				t_cmds_pipeline *pipeline)
 {
 	while (i < cmd_end)
 	{
@@ -22,12 +22,12 @@ int		parse_cmd(char **matrix, size_t i, size_t cmd_end,
 		else if (matrix[i][0] == '$')
 		{
 			if (!handle_dollar(matrix, &i, pipeline))
-				exit(2);//malloc error
+				error_exit("malloc", "memory allocation fail", 2);
 		}
 		else if (matrix[i][0] == '\'' || matrix[i][0] == '"')
 		{
 			if (!handle_quotes(matrix, &i, pipeline))
-				exit(2);//malloc error
+				error_exit("malloc", "memory allocation fail", 2);
 		}
 		else if (matrix[i][0] == '<' || matrix[i][0] == '>')
 			if (handle_redirect(matrix, &i, cmd_end, pipeline) == -1)
@@ -43,20 +43,20 @@ void	set_cmd_to_pipeline(char **matrix, size_t *i, size_t cmd_end,
 	t_list		*new_lst;
 	t_command	*new_cmd;
 	int			argc;
-	
+
 	argc = get_argc(matrix, *i, cmd_end);
 	if (!argc)
-		return;
+		return ;
 	new_cmd = malloc(sizeof(t_command));
 	if (!new_cmd)
-		exit(2);//malloc error
+		error_exit("malloc", "memory allocation fail", 2);
 	new_cmd->argc = argc;
 	new_cmd->argv = get_argv(matrix, i, cmd_end, argc);
 	if (!new_cmd->argv)
-		exit(2);//malloc error
+		error_exit("malloc", "memory allocation fail", 2);
 	new_lst = ft_lstnew(new_cmd);
 	if (!new_lst)
-		exit(2);//mallor error
+		error_exit("malloc", "memory allocation fail", 2);
 	ft_lstadd_back(&pipeline->cmds, new_lst);
 }
 
@@ -73,10 +73,10 @@ size_t	get_cmd_end(char **matrix, size_t i)
 	return (i);
 }
 
-int		parse_pipeline(char **symbol_matrix, size_t *cur_i,
+int	parse_pipeline(char **symbol_matrix, size_t *cur_i,
 			t_cmds_pipeline *pipeline)
 {
-	size_t cmd_end;
+	size_t	cmd_end;
 
 	while (symbol_matrix[*cur_i] && symbol_matrix[*cur_i][0] != ';')
 	{

@@ -14,7 +14,7 @@
 
 static	int	check_pipe_syntax(char **matrix, size_t pipe_i)
 {
-	size_t i;
+	size_t	i;
 
 	if (!pipe_i)
 		return (0);
@@ -43,9 +43,9 @@ static	int	check_cmdsep_syntax(char **matrix, size_t i)
 	return (1);
 }
 
-int			check_seprs_syntax(char **matrix)
+int	check_seprs_syntax(char **matrix)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (matrix[i])

@@ -12,7 +12,7 @@
 
 #include "parser.h"
 
-size_t		set_values_in_lexemes(char **matrix, size_t i, size_t end,
+size_t	set_values_in_lexemes(char **matrix, size_t i, size_t end,
 								t_cmds_pipeline *pipeline)
 {
 	while (i < end)
@@ -22,21 +22,21 @@ size_t		set_values_in_lexemes(char **matrix, size_t i, size_t end,
 		else if (matrix[i][0] == '$')
 		{
 			if (!handle_dollar(matrix, &i, pipeline))
-				return (0);//malloc error
+				return (0);
 		}
 		else if (matrix[i][0] == '\'' || matrix[i][0] == '"')
 		{
 			if (!handle_quotes(matrix, &i, pipeline))
-				return (0);//malloc error
+				return (0);
 		}
 		i++;
 	}
 	return (1);
 }
 
-int		get_argc(char **matrix, size_t i, size_t cmd_end)
+int	get_argc(char **matrix, size_t i, size_t cmd_end)
 {
-	int argc;
+	int	argc;
 
 	argc = 0;
 	while (i < cmd_end)
@@ -83,7 +83,7 @@ char	**get_argv(char **matrix, size_t *cmd_i, size_t cmd_end, size_t argc)
 {
 	char	**argv;
 	size_t	i;
-	
+
 	argv = malloc(argc * sizeof(char *) + 1);
 	if (!argv)
 		return (NULL);

@@ -14,7 +14,7 @@
 
 int	set_env_var(t_env_var *var, char *envp_line)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (envp_line[i] && envp_line[i] != '=')
@@ -67,18 +67,18 @@ void	envp_to_list(t_cmds_pipeline *pipeline, char *envp[])
 	pipeline->envp = NULL;
 	while (envp[i])
 	{
-		var = new_env_var(envp[i]); 
+		var = new_env_var(envp[i]);
 		if (!var)
-			exit(2);//print memory allocation error
+			error_exit("malloc", "memory allocation fail", 2);
 		new_lst = ft_lstnew(var);
 		if (!new_lst)
-			exit(2);//print memory allocation error
+			error_exit("malloc", "memory allocation fail", 2);
 		ft_lstadd_back(&pipeline->envp, new_lst);
 		i++;
 	}
 }
 
-t_env_var*	find_env_var(char *key, t_list *envp)
+t_env_var	*find_env_var(char *key, t_list *envp)
 {
 	while (envp)
 	{

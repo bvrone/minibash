@@ -12,16 +12,16 @@
 
 #include "parser.h"
 
-size_t	get_red_end(char **matrix, size_t i, size_t cmd_end)
+size_t	get_red_end(char **matr, size_t i, size_t cmd_end)
 {
 	while (i < cmd_end)
 	{
-		if (matrix[i][0] == '\\')
+		if (matr[i][0] == '\\')
 			i++;
-		else if (matrix[i][0] == '\'' || matrix[i][0] == '"')
-			skip_quotes(matrix, &i);
-		else if (matrix[i][0] == -1 || matrix[i][0] == '<' || matrix[i][0] == '>')
-			break;
+		else if (matr[i][0] == '\'' || matr[i][0] == '"')
+			skip_quotes(matr, &i);
+		else if (matr[i][0] == -1 || matr[i][0] == '<' || matr[i][0] == '>')
+			break ;
 		i++;
 	}
 	return (i);
@@ -71,9 +71,9 @@ char	*get_filename(char **matrix, size_t *red_i, size_t cmd_end,
 	return (file_name);
 }
 
-int		set_fd(char *filename, t_cmds_pipeline *pipeline, t_fd_type fd_type)
+int	set_fd(char *filename, t_cmds_pipeline *pipeline, t_fd_type fd_type)
 {
-	int fd;
+	int	fd;
 
 	errno = 0;
 	if (fd_type == in)
@@ -98,7 +98,7 @@ int		set_fd(char *filename, t_cmds_pipeline *pipeline, t_fd_type fd_type)
 	return (fd);
 }
 
-int		handle_redirect(char **matrix, size_t *i, size_t cmd_end,
+int	handle_redirect(char **matrix, size_t *i, size_t cmd_end,
 							t_cmds_pipeline *pipeline)
 {
 	char		*file_name;

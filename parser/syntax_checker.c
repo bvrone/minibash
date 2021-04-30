@@ -12,7 +12,7 @@
 
 #include "parser.h"
 
-int		check_filename_syntax(char **matrix, size_t *i)
+int	check_filename_syntax(char **matrix, size_t *i)
 {
 	*i += 1;
 	skip_spaces(matrix, i);
@@ -27,10 +27,10 @@ int		check_filename_syntax(char **matrix, size_t *i)
 	return (1);
 }
 
-int		check_redir_syntax(char **symbol_matrix, size_t *i)
+int	check_redir_syntax(char **symbol_matrix, size_t *i)
 {
 	if (symbol_matrix[*i][0] == '<')
-		return (check_filename_syntax(symbol_matrix, i));	
+		return (check_filename_syntax(symbol_matrix, i));
 	else if (symbol_matrix[*i][0] == '>')
 	{
 		if (symbol_matrix[*i + 1] && symbol_matrix[*i + 1][0] == '>')
@@ -40,7 +40,7 @@ int		check_redir_syntax(char **symbol_matrix, size_t *i)
 	return (1);
 }
 
-int		check_shielding_syntax(char **matrix, size_t *i)
+int	check_shielding_syntax(char **matrix, size_t *i)
 {
 	*i += 1;
 	if (!matrix[*i])
