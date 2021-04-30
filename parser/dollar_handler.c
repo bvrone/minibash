@@ -52,8 +52,6 @@ static size_t	replace_to_env(char **matrix, size_t *dollar_i, t_list *envp)
 
 size_t	handle_dollar(char **matrix, size_t *i, t_cmds_pipeline *pipeline)
 {
-	char	*var;
-
 	if (matrix[*i + 1])
 	{
 		if (matrix[*i + 1][0] == '?')
