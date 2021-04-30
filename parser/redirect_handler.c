@@ -27,11 +27,9 @@ size_t	get_red_end(char **matr, size_t i, size_t cmd_end)
 	return (i);
 }
 
-size_t	get_filename_len(char **matrix, size_t i, size_t red_end,
-							t_cmds_pipeline *pipeline)
+size_t	get_filename_len(char **matrix, size_t i, size_t red_end)
 {
 	size_t	flname_len;
-	size_t	res;
 
 	flname_len = 0;
 	while (i < red_end)
@@ -56,7 +54,7 @@ char	*get_filename(char **matrix, size_t *red_i, size_t cmd_end,
 	red_end = get_red_end(matrix, *red_i, cmd_end);
 	if (!set_values_in_lexemes(matrix, *red_i, red_end, pipeline))
 		return (NULL);
-	flname_len = get_filename_len(matrix, *red_i, red_end, pipeline);
+	flname_len = get_filename_len(matrix, *red_i, red_end);
 	file_name = malloc(flname_len + 1);
 	if (!file_name)
 		return (NULL);
@@ -107,7 +105,7 @@ int	handle_redirect(char **matrix, size_t *i, size_t cmd_end,
 
 	if (matrix[*i][0] == '<')
 		fd_type = in;
-	else if (matrix[*i][0] == '>')
+	else
 	{
 		if (matrix[*i + 1] && matrix[*i + 1][0] == '>')
 		{
