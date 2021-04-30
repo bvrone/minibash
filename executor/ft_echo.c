@@ -23,8 +23,8 @@ int	ft_echo(t_cmds_pipeline *pipeline, t_list *cmds)
 		is_not_n = ft_strcmp(((t_command *)(cmds->data))->argv[1],
 				"-n");
 		i = 1;
-		while (!ft_strcmp(((t_command *)(cmds->data))->argv[i],
-			"-n"))
+		while (i < ((t_command *)(cmds->data))->argc &&
+			!ft_strcmp(((t_command *)(cmds->data))->argv[i], "-n"))
 			i++;
 		while (i < ((t_command *)(cmds->data))->argc)
 		{
