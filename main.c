@@ -27,21 +27,6 @@
 // 	}
 // }
 
-// int keycmp(const char *s1, const char *s2)
-// {
-//     size_t  i;
-//     i = 0;
-//     while (s1[i] && s2[i] && s1[i] != '=' && s2[i] != '=' && s1[i] == s2[i])
-//         i++;
-//     if (s1[i] == '=' && s2[i] == '=')
-//         return (0);
-//     if (s1[i] == '=')
-//         return (- (unsigned char)s2[i]);
-//     if (s2[i] == '=')
-//         return ((unsigned char)s1[i]);
-//     return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-// }
-
 // int	get_fd(char **matrix, size_t *red_i, size_t cmd_end,
 // 			t_cmds_pipeline	*pipeline)
 // {
@@ -174,30 +159,9 @@ int		main(int argc, char *argv[], char *envp[])
 	init_vars(&pipeline, envp);
 	signal(SIGINT, handler);
 	signal(SIGQUIT, handler);
-	// size_t i = 0;
-	// while (envp[i])
-	// {
-	// 	printf("%s\n", envp[i]);
-	// 	i++;
-	// }
-	// printf("----------------------------------------------\n");
-	// while (pipeline.envp)
-	// {
-	// 	printf("%s%s\n", ((t_env_var *)pipeline.envp->data)->key, ((t_env_var *)pipeline.envp->data)->value);
-	// 	pipeline.envp = pipeline.envp->next;
-	// }
-	// return(0);
 	while (1)
 	{
 		ft_putstr_fd("minishell$ ", 1);
-		// res = get_next_line(0, &line);
-		// if (!res)
-		// {
-		// 	ft_putstr_fd("exit\n", 1);
-		// 	return(0);
-		// }
-		// else if(res < 0)
-		// 	exit(1);//gnl error
 		res = termcup(&line);
 		if (!res)
 			exit(0);
@@ -214,29 +178,3 @@ int		main(int argc, char *argv[], char *envp[])
 	}
 	return (0);
 }
-
-
-// typedef enum e_func {
-//     func1,
-//     func2
-// }               t_func;
-
-// void f1(void)
-// {
-//     printf("func1\n");
-// }
-
-// void f2(void)
-// {
-//     printf("func2\n");
-// }
-
-// int main()
-// {
-//     void (*f[2])(void);
-    
-//     f[0] = f1;
-//     f[1] = f2;
-//     (*f[func1])();
-//     return 0;
-// }
