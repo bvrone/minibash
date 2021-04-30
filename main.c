@@ -148,6 +148,20 @@ void	init_vars(t_cmds_pipeline *pipeline, char *envp[])
 		exit(2);
 }
 
+void	handler(int sig)
+{
+	int	status;
+	
+	waitpid(-1, &status, 0);
+	if (WIFSIGNALED(status))
+	{
+		if (sig == SIGINT)
+			write(1, "\n", 1);
+		if (sig == SIGQUIT)
+			ft_putendl_fd("Quit: 3", 1);
+	}
+}
+
 int		main(int argc, char *argv[], char *envp[])
 {
 	int				res;
@@ -158,6 +172,8 @@ int		main(int argc, char *argv[], char *envp[])
 	(void)argc;
 	(void)argv;
 	init_vars(&pipeline, envp);
+	signal(SIGINT, handler);
+	signal(SIGQUIT, handler);
 	// size_t i = 0;
 	// while (envp[i])
 	// {
