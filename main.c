@@ -185,6 +185,8 @@ int		main(int argc, char *argv[], char *envp[])
 		res = termcup(&line);
 		if (!res)
 			exit(0);
+		if (res == 2)
+			continue ;
 		if(res < 0)
 			exit(2);
 		symbol_matrix = split_line_to_matrix(line);

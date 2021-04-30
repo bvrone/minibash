@@ -45,6 +45,7 @@ int			hist_append(char *tmp);
 int			termcup(char **line);
 int			ft_putchar(int c);
 void		is_backspace(t_hist_node **cur);
+int			is_sig_int(t_hist *history, t_termcup *ttc);
 int			is_new_line(t_hist *history, t_hist_node **cur, char **line,
 				t_termcup *ttc);
 int			is_not_special_char(char **input, char *str);

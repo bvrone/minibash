@@ -86,8 +86,6 @@ int	ft_cd(t_cmds_pipeline *pipeline, t_list *cmds)
 		pipeline->last_ret_code = cd_home(pipeline);
 		return (pipeline->last_ret_code);
 	}
-// 	if (!ft_strcmp(((t_command *)(pipeline->cmds->data))->argv[1], "-"))
-// 		return (cd_minus(pipeline));
 	pipeline->last_ret_code = cd_dir(pipeline, cmds);
 	return (pipeline->last_ret_code);
 }

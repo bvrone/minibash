@@ -23,7 +23,7 @@ void	execute_not_builtins(t_cmds_pipeline *pipeline, t_list *cmds)
 	int		i;
 	char	*argv0;
 	char	*comm;
-	
+
 	pid = fork();
 	if (pid < 0)
 		error_exit("exec", "Error fork", 1);
@@ -42,7 +42,7 @@ void	execute_not_builtins(t_cmds_pipeline *pipeline, t_list *cmds)
 			if (res == -1)
 			{
 				error_exit(((t_command *)(cmds->data))->argv[0],
-						strerror(errno), 1);
+					strerror(errno), 1);
 			}
 		}
 		else
@@ -75,7 +75,6 @@ void	execute_not_builtins(t_cmds_pipeline *pipeline, t_list *cmds)
 			if (res == -1)
 				error_exit(argv0, "command not found", 2);
 		}
-		
 	}
 	else
 	{

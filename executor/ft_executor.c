@@ -12,7 +12,6 @@
 
 #include "ft_executor.h"
 
-
 int	exec_command(t_cmds_pipeline *pipeline, int *tmp)
 {
 	int	res;
@@ -50,7 +49,6 @@ int	exec_pipeline(t_cmds_pipeline *pipeline, int *tmp)
 	int		res;
 	int		**pipe_fd;
 
-
 	n = ft_lstsize(pipeline->cmds);
 	pipe_fd = malloc((n - 1) * sizeof(int *));
 	if (!pipe_fd)
@@ -64,11 +62,9 @@ int	exec_pipeline(t_cmds_pipeline *pipeline, int *tmp)
 		if (pipe(pipe_fd[i]) < 0)
 			return (1);
 	}
-
 	i = -1;
 	while (++i < n)
 	{
-	
 		if (i == 0)
 		{
 			if (pipeline->fdin != -1)
@@ -78,7 +74,6 @@ int	exec_pipeline(t_cmds_pipeline *pipeline, int *tmp)
 		}
 		else
 			dup2(pipe_fd[i - 1][0], 0);
-
 		if (i == n - 1)
 		{
 			if (pipeline->fdout != -1)

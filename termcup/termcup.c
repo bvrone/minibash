@@ -49,6 +49,7 @@ int	init_termcup(t_hist *history, t_termcup *ttc, t_hist_node **cur)
 	tcgetattr(0, &(ttc->term));
 	ttc->term.c_lflag &= ~(ECHO);
 	ttc->term.c_lflag &= ~(ICANON);
+	ttc->term.c_lflag &= ~(ISIG);
 	tcsetattr(0, TCSANOW, &(ttc->term));
 	ttc->term_name = ft_strdup("xterm-256color");
 	if (!ttc->term_name)
@@ -64,13 +65,12 @@ void	is_up_or_down_arrow(t_hist *history, char *str, t_hist_node	**cur)
 	{
 		if (*cur != history->first)
 			*cur = (*cur)->prev;
-		tputs(restore_cursor, 1, ft_putchar);
-		tputs(tgetstr("cd", 0), 1, ft_putchar);
-		ft_putstr_fd((*cur)->data, 1);
-		return ;
 	}
-	if (*cur != history->last)
-		*cur = (*cur)->next;
+	else
+	{
+		if (*cur != history->last)
+			*cur = (*cur)->next;
+	}
 	tputs(restore_cursor, 1, ft_putchar);
 	tputs(tgetstr("cd", 0), 1, ft_putchar);
 	ft_putstr_fd((*cur)->data, 1);
@@ -88,20 +88,19 @@ int	termcup_process(t_hist *history, t_termcup *ttc, t_hist_node **cur,
 		str[k] = 0;
 		if (!ft_strcmp(str, "\e[A") || !ft_strcmp(str, "\e[B"))
 			is_up_or_down_arrow(history, str, cur);
-		else if (!strcmp(str, "\177"))
+		else if (!ft_strcmp(str, "\177"))
 			is_backspace(cur);
 		else if (!ft_strcmp(str, "\4") && !ft_strlen((*cur)->data))
 		{
 			write(1, "exit\n", 6);
 			return (0);
 		}
+		else if (!ft_strcmp(str, "\3"))
+			return (is_sig_int(history, ttc));
 		else if (!ft_strcmp(str, "\n"))
 			return (is_new_line(history, cur, line, ttc));
-		else
-		{
-			if (!(is_not_special_char(&(*cur)->data, str) + 1))
-				return (-1);
-		}
+		else if (!(is_not_special_char(&(*cur)->data, str) + 1))
+			return (-1);
 	}
 	return (1);
 }
