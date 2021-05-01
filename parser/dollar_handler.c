@@ -42,7 +42,7 @@ static size_t	replace_to_env(char **matrix, size_t *dollar_i, t_list *envp)
 		return (0);
 	env_var = find_env_var(key, envp);
 	free(key);
-	if (env_var)
+	if (env_var && env_var->exp)
 		res = env_value_to_m(matrix, dollar_i, env_var);
 	else
 		matrix[*dollar_i][0] = 0;

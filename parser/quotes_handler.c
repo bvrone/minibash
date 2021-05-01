@@ -12,6 +12,14 @@
 
 #include "parser.h"
 
+void	shielding_in_dquotesd(char **m, size_t *i)
+{
+	if (m[*i + 1][0] == '\\' || m[*i + 1][0] =='"' || m[*i + 1][0] =='$')
+		symbol_shielding(m, i);
+	else
+		*i += 1;
+}
+
 size_t	handle_dquotes(char **matrix, size_t *i, t_cmds_pipeline *pipeline)
 {
 	size_t	skipd_symb_cnt;
@@ -22,7 +30,7 @@ size_t	handle_dquotes(char **matrix, size_t *i, t_cmds_pipeline *pipeline)
 	while (matrix[*i][0] != '"')
 	{
 		if (matrix[*i][0] == '\\')
-			*i += 1;
+			shielding_in_dquotesd(matrix, i);
 		else if (matrix[*i][0] == '$')
 		{
 			res = handle_dollar(matrix, i, pipeline);

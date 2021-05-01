@@ -21,8 +21,8 @@ void	process_shline(char **symbol_matrix, t_cmds_pipeline *pipeline)
 	pipeline_i = 0;
 	if (!split_to_lexemes(symbol_matrix) || !check_seprs_syntax(symbol_matrix))
 	{
-		ft_putendl_fd("syntax error", 2);
-		clear_pipeline(pipeline);
+		ft_putendl_fd("minishell: syntax error", 2);
+		clear_pipeline(pipeline);//вроде не надо вызывать
 		return ;
 	}
 	while (symbol_matrix[pipeline_i])

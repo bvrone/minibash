@@ -12,7 +12,7 @@
 
 NAME		=	minishell
 CC			=	gcc
-CFLAGS		=	-Wall -Wextra -Werror
+CFLAGS		=	-Wall -Wextra -Werror -g
 PARSER_DIR	=	./parser/
 EXEC_DIR	=	./executor/
 TERM_DIR	=	./termcup/

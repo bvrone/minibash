@@ -24,17 +24,20 @@ void	skip_spaces(char **symbol_matrix, size_t *i)
 int	skip_double_quotes(char **symbol_matrix, size_t *i)
 {
 	*i += 1;
-	if (!symbol_matrix[*i])
-		return (0);
-	while (symbol_matrix[*i][0] != '"')
+	while (1)
 	{
-		*i += 1;
-		if (symbol_matrix[*i][0] == '\\')
-			*i += 1;
+		if (symbol_matrix[*i])
+		{
+			if (symbol_matrix[*i][0] == '\\')
+				*i += 1;
+			else if (symbol_matrix[*i][0] == '"')
+				return (1);
+		}
 		if (!symbol_matrix[*i])
 			return (0);
+		*i += 1;
 	}
-	return (1);
+	return (0);
 }
 
 size_t	skip_apostrophe(char **symbol_matrix, size_t *i)
