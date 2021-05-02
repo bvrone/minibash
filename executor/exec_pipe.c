@@ -12,75 +12,47 @@
 
 #include "ft_executor.h"
 
-int	init_pipe_fd(t_cmds_pipeline *pipeline, size_t *n, int ***pipe_fd)
+void	exec_pipes(t_cmds_pipeline *pipeline, size_t i, int *pid)
+{
+	int	res;
+
+	res = execute_builtins(pipeline, ft_lstind(pipeline->cmds, i));
+	if (res == -1)
+	{	
+		pid[i] = fork();
+		if (pid[i] < 0)
+			error_exit("fork", "Can't create child process", 3);
+		if (pid[i] == 0)
+			exec_one_not_builtins(pipeline, ft_lstind(pipeline->cmds, i));
+	}	
+}
+
+void	exec_pipe(t_cmds_pipeline *pipeline, int **pipe_fd,
+			size_t n, int *in_out)
 {
 	size_t	i;
+	int		status;
+	int		*pid;
 
-	*n = ft_lstsize(pipeline->cmds);
-	*pipe_fd = malloc((*n - 1) * sizeof(int *));
-	if (!*pipe_fd)
+	pid = malloc(n * sizeof(int));
+	if (!pid)
 		error_exit("malloc", "Memory allocation failed", 2);
-	i = 0;
-	while (i < *n - 1)
-	{
-		(*pipe_fd)[i] = malloc(2 * sizeof(int));
-		if (!(*pipe_fd)[i])
-			error_exit("malloc", "Memory allocation failed", 2);
-		if (pipe((*pipe_fd)[i]) < 0)
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-void	close_pipe(t_cmds_pipeline *pipeline, int ***pipe_fd,
-				size_t n, size_t i)
-{
-	if (i == 0)
-		close(pipeline->fdin);
-	else
-		close((*pipe_fd)[i - 1][0]);
-	if (i == n - 1)
-		close(pipeline->fdout);
-	else
-		close((*pipe_fd)[i][1]);
-}
-
-int	get_in_out(t_cmds_pipeline *pipeline, int *tmp, int k)
-{
-	if (k == 0)
-	{
-		if (pipeline->fdin != -1)
-			return (pipeline->fdin);
-		return (tmp[0]);
-	}
-	if (pipeline->fdout != -1)
-		return (pipeline->fdout);
-	return (tmp[1]);
-}
-
-void	exec_pipe(t_cmds_pipeline *pipeline, int **pipe_fd, size_t n, int *tmp)
-{
-	size_t	i;
-	int		res;
-
 	i = 0;
 	while (i < n)
 	{
-		if (i == 0)
-			dup2(get_in_out(pipeline, tmp, 0), 0);
-		else
-			dup2(pipe_fd[i - 1][0], 0);
-		if (i == n - 1)
-			dup2(get_in_out(pipeline, tmp, 1), 1);
-		else
-			dup2(pipe_fd[i][1], 1);
-		res = execute_builtins(pipeline, ft_lstind(pipeline->cmds, i));
-		if (res == -1)
-			execute_not_builtins(pipeline, ft_lstind(pipeline->cmds, i));
-		close_pipe(pipeline, &pipe_fd, n, i);
+		set_in_out(in_out, pipe_fd, n, i);
+		exec_pipes(pipeline, i, pid);
+		close_pipe_fd(pipeline, pipe_fd, n, i);
 		i++;
 	}
+	i = 0;
+	while (i < n)
+	{
+		waitpid(pid[i], &status, 0);
+		pipeline->last_ret_code = WEXITSTATUS(status);
+		i++;
+	}
+	free(pid);
 }
 
 int	exec_pipeline(t_cmds_pipeline *pipeline, int *tmp)
@@ -88,10 +60,12 @@ int	exec_pipeline(t_cmds_pipeline *pipeline, int *tmp)
 	size_t	n;
 	size_t	i;
 	int		**pipe_fd;
+	int		in_out[2];
 
 	if (init_pipe_fd(pipeline, &n, &pipe_fd))
 		return (1);
-	exec_pipe(pipeline, pipe_fd, n, tmp);
+	init_in_out(pipeline, tmp, in_out);
+	exec_pipe(pipeline, pipe_fd, n, in_out);
 	i = 0;
 	while (i < n - 1)
 	{

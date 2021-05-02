@@ -31,7 +31,7 @@ SRC_HEADERS	= $(addprefix $(HEADERS), ft_executor.h minishell_structures.h \
 SRC_EXEC	= $(addprefix $(EXEC_DIR), ft_builtins.c ft_cd.c ft_echo.c \
 				ft_env.c ft_executor.c ft_exit.c ft_export.c \
 				ft_not_builtins.c ft_pwd.c ft_unset.c exec_pipe.c \
-				utils_export.c)
+				utils_export.c pipe_fd.c)
 SRC_TERM	= $(addprefix $(TERM_DIR), termcup.c utils_termcup.c hist.c)
 
 OBJ_MAIN	= $(SRC_MAIN:.c=.o)
