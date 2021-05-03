@@ -31,7 +31,7 @@ size_t		handle_dquotes(char **matrix, size_t *i,
 int			handle_redirect(char **matrix, size_t *i, size_t cmd_end,
 				t_cmds_pipeline *pipeline);
 char		**split_line_to_matrix(char *line);
-int			split_to_lexemes(char **matrix);
+int			split_to_lexemes(char **matrix, size_t *i);
 char		*get_key_from_m(char **matrix, size_t key_start, size_t key_len);
 size_t		env_value_to_m(char **matrix, size_t *dollar_i,
 				t_env_var *env_var);

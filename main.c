@@ -14,17 +14,26 @@
 #include "ft_executor.h"
 #include "termcup.h"
 
+void	put_error_syntax(char **matrix, size_t i)
+{
+	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
+	ft_putchar_fd(matrix[i - 1][0], 2);
+	ft_putendl_fd("'", 2);
+}
+
 void	process_shline(char **symbol_matrix, t_cmds_pipeline *pipeline)
 {
 	size_t	pipeline_i;
 
 	pipeline_i = 0;
-	if (!split_to_lexemes(symbol_matrix) || !check_seprs_syntax(symbol_matrix))
+	if (!split_to_lexemes(symbol_matrix, &pipeline_i) || 
+		!check_seprs_syntax(symbol_matrix))
 	{
-		ft_putendl_fd("minishell: syntax error", 2);
+		put_error_syntax(symbol_matrix, pipeline_i);
 		clear_pipeline(pipeline);//вроде не надо вызывать
 		return ;
 	}
+	pipeline_i = 0;
 	while (symbol_matrix[pipeline_i])
 	{
 		if (parse_pipeline(symbol_matrix, &pipeline_i, pipeline) == -1)
@@ -61,6 +70,7 @@ void	init_vars(t_cmds_pipeline *pipeline, char *envp[])
 		exit(2);
 	signal(SIGINT, handler);
 	signal(SIGQUIT, handler);
+	signal(SIGTERM, SIG_IGN);
 }
 
 void	main_loop(t_cmds_pipeline *pipeline)
@@ -71,7 +81,7 @@ void	main_loop(t_cmds_pipeline *pipeline)
 
 	while (1)
 	{
-		ft_putstr_fd("minishell$ ", 1);
+		ft_putstr_fd("minishell$ ", 2);
 		res = termcup(&line);
 		if (!res)
 			exit(0);
