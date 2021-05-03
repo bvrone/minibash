@@ -82,7 +82,9 @@ void	exec_one_not_builtins(t_cmds_pipeline *pipeline, t_list *cmds)
 {
 	char	**envp;
 
-	//signal(SIGTERM, sigterm_hand);
+	signal(SIGTERM, SIG_DFL);
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	envp = list_to_envp(pipeline->envp);
 	if (!envp)
 		error_exit("malloc", "Memory malloc failed", 2);
@@ -104,6 +106,28 @@ void	execute_not_builtins(t_cmds_pipeline *pipeline, t_list *cmds)
 		error_exit("fork", "Can't create child process", 3);
 	if (pid == 0)
 		exec_one_not_builtins(pipeline, cmds);
-	waitpid(pid, &status, 0);
-	pipeline->last_ret_code = WEXITSTATUS(status);
+	else
+	{
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			pipeline->last_ret_code = WEXITSTATUS(status);
+		else
+		{
+			if (WTERMSIG(status) == SIGTERM)
+			{
+				ft_putendl_fd("Terminated", 2);
+				pipeline->last_ret_code = 143;
+			}
+			else if (WTERMSIG(status) == SIGINT)
+			{
+				write(1, "\n", 2);
+				pipeline->last_ret_code = 130;
+			}
+			else if (WTERMSIG(status) == SIGQUIT)
+			{
+				ft_putendl_fd("Quit: 3", 2);
+				pipeline->last_ret_code = 131;
+			}
+		}
+	}
 }
