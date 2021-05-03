@@ -29,7 +29,7 @@ void	set_envp(t_list *envp, const char *key, char *value)
 
 	arg = ft_strjoin(key, value);
 	if (!arg)
-		exit(2);
+		return ;
 	insert_env(envp, arg);
 	free(arg);
 }
@@ -59,8 +59,8 @@ int	cd_home(t_cmds_pipeline *pipeline)
 
 int	cd_dir(t_cmds_pipeline *pipeline, t_list *cmds)
 {
-	int		res;
-	char	*tmp;
+	int			res;
+	char		*tmp;
 
 	errno = 0;
 	tmp = get_pwd();
@@ -74,7 +74,11 @@ int	cd_dir(t_cmds_pipeline *pipeline, t_list *cmds)
 		return (1);
 	}
 	set_envp(pipeline->envp, "OLDPWD=", tmp);
-	set_envp(pipeline->envp, "PWD=", get_pwd());
+	free(tmp);
+	tmp = get_pwd();
+	set_envp(pipeline->envp, "PWD=", tmp);
+	if (!tmp)
+		put_error("getcwd", strerror(errno));
 	free(tmp);
 	return (0);
 }

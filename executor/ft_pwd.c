@@ -14,22 +14,15 @@
 
 int	ft_pwd(t_cmds_pipeline *pipeline, t_list *cmds)
 {
-	char	*buf;
-	size_t	size;
+	t_env_var	*pwd;
+	char		*buf;
 
 	(void)cmds;
-	size = 100;
-	buf = NULL;
-	errno = 0;
-	buf = getcwd(buf, size);
+	pwd = find_env_var("PWD", pipeline->envp);
+	buf = ft_strdup(pwd->value);
 	if (!buf)
-	{
-		ft_putstr_fd("minishell: pwd: ", 2);
-		ft_putendl_fd(strerror(errno), 2);
-		pipeline->last_ret_code = 1;
-		return (1);
-	}
-	ft_putendl_fd(buf, 1);
+		error_exit("malloc", "memory allocation fail", 2);
+	ft_putendl_fd(buf, 2);
 	free(buf);
 	pipeline->last_ret_code = 0;
 	return (0);
