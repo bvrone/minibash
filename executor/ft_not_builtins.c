@@ -69,30 +69,34 @@ void	exec_not_path(t_cmds_pipeline *pipeline, t_list *cmds, char **envp)
 		i++;
 	}
 	if (res == -1)
-		error_exit(argv0, "command not found", 2);
+		error_exit(argv0, "command not found", 127);
+}
+
+void	exec_one_not_builtins(t_cmds_pipeline *pipeline, t_list *cmds)
+{
+	char	**envp;
+
+	envp = list_to_envp(pipeline->envp);
+	if (!envp)
+		error_exit("malloc", "Memory malloc failed", 2);
+	if (((t_command *)(cmds->data))->argv[0][0] == '.'
+	|| ((t_command *)(cmds->data))->argv[0][0] == '/'
+	|| ((t_command *)(cmds->data))->argv[0][0] == '~')
+		exec_with_path(cmds, envp);
+	else
+		exec_not_path(pipeline, cmds, envp);
 }
 
 void	execute_not_builtins(t_cmds_pipeline *pipeline, t_list *cmds)
 {
 	int		pid;
 	int		status;
-	char	**envp;
 
 	pid = fork();
 	if (pid < 0)
-		error_exit("exec", "Error fork", 1);
+		error_exit("fork", "Can't create child process", 3);
 	if (pid == 0)
-	{
-		envp = list_to_envp(pipeline->envp);
-		if (!envp)
-			error_exit("malloc", "Memory malloc failed", 2);
-		if (((t_command *)(cmds->data))->argv[0][0] == '.'
-		|| ((t_command *)(cmds->data))->argv[0][0] == '/'
-		|| ((t_command *)(cmds->data))->argv[0][0] == '~')
-			exec_with_path(cmds, envp);
-		else
-			exec_not_path(pipeline, cmds, envp);
-	}
+		exec_one_not_builtins(pipeline, cmds);
 	else
 	{
 		waitpid(pid, &status, 0);
