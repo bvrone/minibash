@@ -72,12 +72,6 @@ void	exec_not_path(t_cmds_pipeline *pipeline, t_list *cmds, char **envp)
 		error_exit(argv0, "command not found", 127);
 }
 
-void	sigterm_hand(int sig)
-{
-	(void)sig;
-	error_exit("", "Terminated", 143);
-}
-
 void	exec_one_not_builtins(t_cmds_pipeline *pipeline, t_list *cmds)
 {
 	char	**envp;
@@ -109,25 +103,6 @@ void	execute_not_builtins(t_cmds_pipeline *pipeline, t_list *cmds)
 	else
 	{
 		waitpid(pid, &status, 0);
-		if (WIFEXITED(status))
-			pipeline->last_ret_code = WEXITSTATUS(status);
-		else
-		{
-			if (WTERMSIG(status) == SIGTERM)
-			{
-				ft_putendl_fd("Terminated", 2);
-				pipeline->last_ret_code = 143;
-			}
-			else if (WTERMSIG(status) == SIGINT)
-			{
-				write(1, "\n", 2);
-				pipeline->last_ret_code = 130;
-			}
-			else if (WTERMSIG(status) == SIGQUIT)
-			{
-				ft_putendl_fd("Quit: 3", 2);
-				pipeline->last_ret_code = 131;
-			}
-		}
+		pipeline->last_ret_code = get_child_retcode(status);
 	}
 }

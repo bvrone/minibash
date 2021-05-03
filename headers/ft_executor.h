@@ -41,5 +41,6 @@ void		init_in_out(t_cmds_pipeline *pipeline, int *tmp, int *in_out);
 void		set_in_out(int *in_out, int **pipe_fd, size_t n, size_t i);
 void		close_pipe_fd(t_cmds_pipeline *pipeline, int **pipe_fd,
 				size_t n, size_t i);
+int			get_child_retcode(int status);
 
 #endif

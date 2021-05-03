@@ -12,6 +12,36 @@
 
 #include "ft_executor.h"
 
+int	get_child_sig_retcode(int status)
+{
+	if (WTERMSIG(status) == SIGTERM)
+	{
+		ft_putstr_fd("Terminated: ", 2);
+		ft_putnbr_fd(SIGTERM, 2);
+		ft_putchar_fd('\n', 2);
+		return (143);
+	}
+	else if (WTERMSIG(status) == SIGINT)
+	{
+		ft_putchar_fd('\n', 2);
+		return (130);
+	}
+	else if (WTERMSIG(status) == SIGQUIT)
+	{
+		ft_putendl_fd("Quit: 3", 2);
+		return (131);
+	}
+	return (0);
+}
+
+int	get_child_retcode(int status)
+{
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	else
+		return (get_child_sig_retcode(status));
+}
+
 void	exec_pipes(t_cmds_pipeline *pipeline, size_t i, int *pid)
 {
 	int	res;
@@ -49,9 +79,9 @@ void	exec_pipe(t_cmds_pipeline *pipeline, int **pipe_fd,
 	while (i < n)
 	{
 		waitpid(pid[i], &status, 0);
-		pipeline->last_ret_code = WEXITSTATUS(status);
 		i++;
 	}
+	pipeline->last_ret_code = get_child_retcode(status);
 	free(pid);
 }
 

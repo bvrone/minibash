@@ -26,13 +26,9 @@ void	process_shline(char **symbol_matrix, t_cmds_pipeline *pipeline)
 	size_t	pipeline_i;
 
 	pipeline_i = 0;
-	if (!split_to_lexemes(symbol_matrix, &pipeline_i) || 
-		!check_seprs_syntax(symbol_matrix))
-	{
-		put_error_syntax(symbol_matrix, pipeline_i);
-		clear_pipeline(pipeline);//вроде не надо вызывать
-		return ;
-	}
+	if (!split_to_lexemes(symbol_matrix, &pipeline_i)
+		|| !check_seprs_syntax(symbol_matrix))
+		return (put_error_syntax(symbol_matrix, pipeline_i));
 	pipeline_i = 0;
 	while (symbol_matrix[pipeline_i])
 	{
@@ -40,27 +36,6 @@ void	process_shline(char **symbol_matrix, t_cmds_pipeline *pipeline)
 			return (clear_pipeline(pipeline));
 		ft_executor(pipeline);
 		clear_pipeline(pipeline);
-	}
-}
-
-void	handler(int sig)
-{
-	int	status;
-
-	waitpid(-1, &status, 0);
-	if (WIFSIGNALED(status))
-	{
-		if (sig == SIGINT)
-			write(1, "\n", 2);
-		if (sig == SIGQUIT)
-			ft_putendl_fd("Quit: 3", 2);
-		if (sig == SIGTERM)
-			ft_putendl_fd("Terminated", 2);
-	}
-	else 
-	{
-		if (sig == SIGTERM)
-			ft_putendl_fd("Terminated", 2);
 	}
 }
 
@@ -75,8 +50,8 @@ void	init_vars(t_cmds_pipeline *pipeline, char *envp[])
 		exit(2);
 	if (!inc_shlvl(pipeline))
 		exit(2);
-	signal(SIGINT, handler);
-	signal(SIGQUIT, handler);
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	signal(SIGTERM, SIG_IGN);
 }
 
