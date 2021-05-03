@@ -80,7 +80,7 @@ int	delete_envp(t_list **envp, char *arg)
 		return (1);
 	}
 	for_del = search_env(*envp, arg);
-	if (!ft_strcmp(arg, "OLDPWD") && for_del)
+	if ((!ft_strcmp(arg, "OLDPWD") || !ft_strcmp(arg, "PWD")) && for_del)
 	{
 		((t_env_var *)(for_del->data))->exp = 0;
 		return (0);

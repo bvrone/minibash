@@ -44,7 +44,7 @@ int	insert_new_lst(t_list *envp, char *arg, t_env_var *var)
 	t_list	*new_lst;
 
 	new_lst = search_env(envp, var->key);
-	if (!ft_strcmp(arg, "OLDPWD") && new_lst)
+	if ((!ft_strcmp(arg, "OLDPWD") || !ft_strcmp(arg, "PWD")) && new_lst)
 	{
 		((t_env_var *)(new_lst->data))->exp = 1;
 		return (0);
@@ -65,13 +65,6 @@ int	insert_env(t_list *envp, char *arg)
 {
 	t_env_var	*var;
 
-	if (!ft_strcmp(arg, "PWD") && !search_env(envp, "PWD"))
-	{
-		free(arg);
-		arg = ft_strjoin("PWD=", get_pwd());
-		if (!arg)
-			return (1);
-	}
 	var = new_env_var(arg);
 	if (!check_var(var))
 		return (1);
