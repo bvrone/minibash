@@ -24,6 +24,8 @@ void	free_cmd(void *cmd)
 void	clear_pipeline(t_cmds_pipeline *pipeline)
 {
 	ft_lstclear(&pipeline->cmds, &free_cmd);
+	close(pipeline->fdin);
+	close(pipeline->fdout);
 	pipeline->fdin = -1;
 	pipeline->fdout = -1;
 }

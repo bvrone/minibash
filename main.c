@@ -51,9 +51,16 @@ void	handler(int sig)
 	if (WIFSIGNALED(status))
 	{
 		if (sig == SIGINT)
-			write(1, "\n", 1);
+			write(1, "\n", 2);
 		if (sig == SIGQUIT)
-			ft_putendl_fd("Quit: 3", 1);
+			ft_putendl_fd("Quit: 3", 2);
+		if (sig == SIGTERM)
+			ft_putendl_fd("Terminated", 2);
+	}
+	else 
+	{
+		if (sig == SIGTERM)
+			ft_putendl_fd("Terminated", 2);
 	}
 }
 
