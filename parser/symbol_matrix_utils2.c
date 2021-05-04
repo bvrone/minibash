@@ -79,6 +79,15 @@ char	*get_arg(char **matrix, size_t *cmd_i, size_t cmd_end)
 	return (arg);
 }
 
+void	str_to_lower(char *str)
+{
+	while (*str)
+	{
+		*str = ft_tolower(*str);
+		str++;
+	}
+}
+
 char	**get_argv(char **matrix, size_t *cmd_i, size_t cmd_end, size_t argc)
 {
 	char	**argv;
@@ -96,5 +105,6 @@ char	**get_argv(char **matrix, size_t *cmd_i, size_t cmd_end, size_t argc)
 		i++;
 	}
 	argv[i] = NULL;
+	str_to_lower(argv[0]);
 	return (argv);
 }
