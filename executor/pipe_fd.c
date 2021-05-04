@@ -34,17 +34,18 @@ int	init_pipe_fd(int ***pipe_fd, size_t n)
 
 void	init_in_out(t_cmds_pipeline *pipeline, int *tmp, size_t n, int *in_out)
 {
-	if (((t_command *)ft_lstind(pipeline->cmds, 0))->red_fd[0] != -1)
+	if (((t_command *)ft_lstind(pipeline->cmds, 0)->data)->red_fd[0] != -1)
 		in_out[0] = ((t_command *)ft_lstind(pipeline->cmds, 0))->red_fd[0];
 	else
 		in_out[0] = tmp[0];
-	if (((t_command *)ft_lstind(pipeline->cmds, n - 1))->red_fd[1] != -1)
+	if (((t_command *)ft_lstind(pipeline->cmds, n - 1)->data)->red_fd[1] != -1)
 		in_out[1] = ((t_command *)ft_lstind(pipeline->cmds, n - 1))->red_fd[1];
 	else
 		in_out[1] = tmp[1];
 }
 
-void	set_in_out(t_cmds_pipeline *pipeline, int *in_out, int **pipe_fd, size_t i)
+void	set_in_out(t_cmds_pipeline *pipeline, int *in_out,
+		int **pipe_fd, size_t i)
 {
 	size_t	n;
 
@@ -53,8 +54,9 @@ void	set_in_out(t_cmds_pipeline *pipeline, int *in_out, int **pipe_fd, size_t i)
 		dup2(in_out[0], 0);
 	else
 	{
-		if (((t_command *)ft_lstind(pipeline->cmds, i))->red_fd[0] != -1)
-			dup2(((t_command *)ft_lstind(pipeline->cmds, 0))->red_fd[0], 0);
+		if (((t_command *)ft_lstind(pipeline->cmds, i)->data)->red_fd[0] != -1)
+			dup2(((t_command *)ft_lstind(pipeline->cmds, i)->data)->red_fd[0],
+				0);
 		else
 			dup2(pipe_fd[i - 1][0], 0);
 	}
@@ -62,8 +64,9 @@ void	set_in_out(t_cmds_pipeline *pipeline, int *in_out, int **pipe_fd, size_t i)
 		dup2(in_out[1], 1);
 	else
 	{
-		if (((t_command *)ft_lstind(pipeline->cmds, i))->red_fd[1] != -1)
-			dup2(((t_command *)ft_lstind(pipeline->cmds, i))->red_fd[1], 1);
+		if (((t_command *)ft_lstind(pipeline->cmds, i)->data)->red_fd[1] != -1)
+			dup2(((t_command *)ft_lstind(pipeline->cmds, i)->data)->red_fd[1],
+				1);
 		else
 			dup2(pipe_fd[i][1], 1);
 	}
@@ -72,8 +75,8 @@ void	set_in_out(t_cmds_pipeline *pipeline, int *in_out, int **pipe_fd, size_t i)
 void	close_pipe_fd(t_cmds_pipeline *pipeline, int **pipe_fd,
 		size_t n, size_t i)
 {
-	close(((t_command *)ft_lstind(pipeline->cmds, i))->red_fd[0]);
-	close(((t_command *)ft_lstind(pipeline->cmds, i))->red_fd[1]);
+	close(((t_command *)ft_lstind(pipeline->cmds, i)->data)->red_fd[0]);
+	close(((t_command *)ft_lstind(pipeline->cmds, i)->data)->red_fd[1]);
 	if (i > 0)
 		close(pipe_fd[i - 1][0]);
 	if (i < n - 1)
