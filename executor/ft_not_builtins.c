@@ -22,7 +22,7 @@ void	exec_with_path(t_list *cmds, char **envp)
 	if (res == -1)
 	{
 		error_exit(((t_command *)(cmds->data))->argv[0],
-			strerror(errno), 1);
+			strerror(errno), 2);
 	}
 }
 
