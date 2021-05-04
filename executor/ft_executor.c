@@ -16,19 +16,19 @@ int	exec_command(t_cmds_pipeline *pipeline, int *tmp)
 {
 	int	res;
 
-	if (pipeline->fdin != -1)
-		dup2(pipeline->fdin, 0);
+	if (((t_command *)pipeline->cmds->data)->red_fd[0] != -1)
+		dup2(((t_command *)pipeline->cmds->data)->red_fd[0], 0);
 	else
 		dup2(tmp[0], 0);
-	if (pipeline->fdout != -1)
-		dup2(pipeline->fdout, 1);
+	if (((t_command *)pipeline->cmds->data)->red_fd[1] != -1)
+		dup2(((t_command *)pipeline->cmds->data)->red_fd[1], 1);
 	else
 		dup2(tmp[1], 1);
 	res = execute_builtins(pipeline, pipeline->cmds);
 	if (res == -1)
 		execute_not_builtins(pipeline, pipeline->cmds);
-	close(pipeline->fdin);
-	close(pipeline->fdout);
+	close(((t_command *)pipeline->cmds->data)->red_fd[0]);
+	close(((t_command *)pipeline->cmds->data)->red_fd[1]);
 	return (res);
 }
 
@@ -49,7 +49,5 @@ int	ft_executor(t_cmds_pipeline *pipeline)
 	dup2(tmp[1], 1);
 	close(tmp[0]);
 	close(tmp[1]);
-	pipeline->fdin = -1;
-	pipeline->fdout = -1;
 	return (res);
 }

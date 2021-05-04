@@ -36,9 +36,10 @@ void		show_export(t_list *envp);
 char		*get_pwd(void);
 int			exec_pipeline(t_cmds_pipeline *pipeline, int *tmp);
 void		exec_one_not_builtins(t_cmds_pipeline *pipeline, t_list *cmds);
-int			init_pipe_fd(t_cmds_pipeline *pipeline, size_t *n, int ***pipe_fd);
-void		init_in_out(t_cmds_pipeline *pipeline, int *tmp, int *in_out);
-void		set_in_out(int *in_out, int **pipe_fd, size_t n, size_t i);
+int			init_pipe_fd(int ***pipe_fd, size_t n);
+void		init_in_out(t_cmds_pipeline *pipeline, int *tmp, size_t n, int *in_out);
+void		set_in_out(t_cmds_pipeline *pipeline, int *in_out,
+				int **pipe_fd, size_t i);
 void		close_pipe_fd(t_cmds_pipeline *pipeline, int **pipe_fd,
 				size_t n, size_t i);
 int			get_child_retcode(int status);

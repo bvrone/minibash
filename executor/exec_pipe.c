@@ -70,7 +70,7 @@ void	exec_pipe(t_cmds_pipeline *pipeline, int **pipe_fd,
 	i = 0;
 	while (i < n)
 	{
-		set_in_out(in_out, pipe_fd, n, i);
+		set_in_out(pipeline, in_out, pipe_fd, i);
 		exec_pipes(pipeline, i, pid);
 		close_pipe_fd(pipeline, pipe_fd, n, i);
 		i++;
@@ -92,9 +92,10 @@ int	exec_pipeline(t_cmds_pipeline *pipeline, int *tmp)
 	int		**pipe_fd;
 	int		in_out[2];
 
-	if (init_pipe_fd(pipeline, &n, &pipe_fd))
+	n = ft_lstsize(pipeline->cmds);
+	if (init_pipe_fd(&pipe_fd, n - 1))
 		return (1);
-	init_in_out(pipeline, tmp, in_out);
+	init_in_out(pipeline, tmp, n, in_out);
 	exec_pipe(pipeline, pipe_fd, n, in_out);
 	i = 0;
 	while (i < n - 1)
