@@ -42,8 +42,8 @@ void	process_shline(char **symbol_matrix, t_cmds_pipeline *pipeline)
 void	init_vars(t_cmds_pipeline *pipeline, char *envp[])
 {
 	pipeline->cmds = NULL;
-	pipeline->fdin = -1;
-	pipeline->fdout = -1;
+	pipeline->tmp_fdin = -1;
+	pipeline->tmp_fdout = -1;
 	pipeline->last_ret_code = 0;
 	envp_to_list(pipeline, envp);
 	if (!add_to_envp_if_not("OLDPWD", &pipeline->envp))

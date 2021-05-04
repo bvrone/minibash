@@ -52,6 +52,10 @@ void	set_cmd_to_pipeline(char **matrix, size_t *i, size_t cmd_end,
 		error_exit("malloc", "memory allocation fail", 2);
 	new_cmd->argc = argc;
 	new_cmd->argv = get_argv(matrix, i, cmd_end, argc);
+	new_cmd->red_fd[0] = pipeline->tmp_fdin;
+	new_cmd->red_fd[1] = pipeline->tmp_fdout;
+	pipeline->tmp_fdin = -1;
+	pipeline->tmp_fdout = -1;
 	if (!new_cmd->argv)
 		error_exit("malloc", "memory allocation fail", 2);
 	new_lst = ft_lstnew(new_cmd);

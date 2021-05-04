@@ -25,6 +25,7 @@ typedef struct s_command
 {
 	int			argc;
 	char		**argv;
+	int			red_fd[2];
 }				t_command;
 
 typedef struct s_env_var
@@ -44,8 +45,8 @@ typedef struct s_cmds_pipeline
 {
 	t_list		*cmds;
 	t_list		*envp;
-	int			fdin;
-	int			fdout;
+	int			tmp_fdin;
+	int			tmp_fdout;
 	int			last_ret_code;
 	t_outf_flag	outfile_oflag;
 }				t_cmds_pipeline;

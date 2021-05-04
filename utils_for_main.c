@@ -17,6 +17,8 @@
 void	free_cmd(void *cmd)
 {
 	ft_split_clear(((t_command *)cmd)->argv);
+	close(((t_command *)cmd)->red_fd[0]);
+	close(((t_command *)cmd)->red_fd[1]);
 	free(cmd);
 	cmd = NULL;
 }
@@ -24,10 +26,8 @@ void	free_cmd(void *cmd)
 void	clear_pipeline(t_cmds_pipeline *pipeline)
 {
 	ft_lstclear(&pipeline->cmds, &free_cmd);
-	close(pipeline->fdin);
-	close(pipeline->fdout);
-	pipeline->fdin = -1;
-	pipeline->fdout = -1;
+	pipeline->tmp_fdin = -1;
+	pipeline->tmp_fdout = -1;
 }
 
 int	add_to_envp_if_not(char *key, t_list **envp)
