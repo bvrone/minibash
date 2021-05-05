@@ -53,17 +53,17 @@ int	check_seprs_syntax(char **matrix)
 		if (matrix[i][0] == '|')
 		{
 			if (!check_pipe_syntax(matrix, i))
-				return (0);
+				return (put_syntax_error_sep_token(matrix, i));
 		}
 		else if (matrix[i][0] == ';')
 		{
 			if (!check_cmdsep_syntax(matrix, i))
-				return (0);
+				return (put_syntax_error_sep_token(matrix, i));
 		}
 		else if (matrix[i][0] == '\'' || matrix[i][0] == '"')
 		{
 			if (!skip_quotes(matrix, &i))
-				return (0);
+				return (put_multiline_syntax_error());
 		}
 		i++;
 	}

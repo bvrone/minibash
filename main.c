@@ -14,21 +14,12 @@
 #include "ft_executor.h"
 #include "termcup.h"
 
-void	put_error_syntax(char **matrix, size_t i)
-{
-	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
-	ft_putchar_fd(matrix[i - 1][0], 2);
-	ft_putendl_fd("'", 2);
-}
-
 void	process_shline(char **symbol_matrix, t_cmds_pipeline *pipeline)
 {
 	size_t	pipeline_i;
 
-	pipeline_i = 0;
-	if (!split_to_lexemes(symbol_matrix, &pipeline_i)
-		|| !check_seprs_syntax(symbol_matrix))
-		return (put_error_syntax(symbol_matrix, pipeline_i));
+	if (!split_to_lexemes(symbol_matrix) || !check_seprs_syntax(symbol_matrix))
+		return ;
 	pipeline_i = 0;
 	while (symbol_matrix[pipeline_i])
 	{

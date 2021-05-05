@@ -13,8 +13,9 @@
 #ifndef PARSER_H
 # define PARSER_H
 
-# define SPACES			" \n\t\r"
-# define CMD_DELIMITS	";|"
+# define SPACES					" \n\t\r"
+# define CMD_DELIMITS			";|"
+# define WRONG_FILENAME_SYMBOLS	"|;#&<>\\"
 
 # include "minishell_structures.h"
 
@@ -31,7 +32,7 @@ size_t		handle_dquotes(char **matrix, size_t *i,
 int			handle_redirect(char **matrix, size_t *i, size_t cmd_end,
 				t_cmds_pipeline *pipeline);
 char		**split_line_to_matrix(char *line);
-int			split_to_lexemes(char **matrix, size_t *i);
+int			split_to_lexemes(char **matrix);
 char		*get_key_from_m(char **matrix, size_t key_start, size_t key_len);
 size_t		env_value_to_m(char **matrix, size_t *dollar_i,
 				t_env_var *env_var);

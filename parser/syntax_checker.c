@@ -18,11 +18,7 @@ int	check_filename_syntax(char **matrix, size_t *i)
 	skip_spaces(matrix, i);
 	if (!matrix[*i])
 		return (0);
-	else if (matrix[*i][0] == '|' || matrix[*i][0] == ';')
-		return (0);
-	else if (matrix[*i][0] == '#' || matrix[*i][0] == '&')
-		return (0);
-	else if (matrix[*i][0] == '<' || matrix[*i][0] == '>')
+	else if (ft_strchr(WRONG_FILENAME_SYMBOLS, matrix[*i][0]))
 		return (0);
 	return (1);
 }

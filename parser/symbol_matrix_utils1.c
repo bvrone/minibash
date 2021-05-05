@@ -79,28 +79,31 @@ char	**split_line_to_matrix(char *line)
 	return (symbol_matrix);
 }
 
-int	split_to_lexemes(char **matrix, size_t *i)
+int	split_to_lexemes(char **matrix)
 {
-	while (matrix[*i])
+	size_t	i;
+
+	i = 0;
+	while (matrix[i])
 	{
-		if (ft_strchr(SPACES, matrix[*i][0]))
-			matrix[*i][0] = -1;
-		else if (matrix[*i][0] == '\\')
+		if (ft_strchr(SPACES, matrix[i][0]))
+			matrix[i][0] = -1;
+		else if (matrix[i][0] == '\\')
 		{
-			if (!check_shielding_syntax(matrix, i))
-				return (0);
+			if (!check_shielding_syntax(matrix, &i))
+				return (put_multiline_syntax_error());
 		}
-		else if (matrix[*i][0] == '#')
-			comment_start(matrix, i);
-		else if (matrix[*i][0] == '\'' || matrix[*i][0] == '"')
+		else if (matrix[i][0] == '#')
+			comment_start(matrix, &i);
+		else if (matrix[i][0] == '\'' || matrix[i][0] == '"')
 		{
-			if (!skip_quotes(matrix, i))
-				return (0);
+			if (!skip_quotes(matrix, &i))
+				return (put_multiline_syntax_error());
 		}
-		else if (matrix[*i][0] == '<' || matrix[*i][0] == '>')
-			if (!check_redir_syntax(matrix, i))
-				return (0);
-		*i += 1;
+		else if (matrix[i][0] == '<' || matrix[i][0] == '>')
+			if (!check_redir_syntax(matrix, &i))
+				return (put_syntax_error_redir(matrix, i));
+		i++;
 	}
 	return (1);
 }
