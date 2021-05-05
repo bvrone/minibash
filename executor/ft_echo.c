@@ -12,6 +12,23 @@
 
 #include "ft_executor.h"
 
+int	is_key_n(char *str)
+{
+	size_t	i;
+
+	i = 0;
+	if (str[i] != '-')
+		return (0);
+	i++;
+	while (str[i])
+	{
+		if (str[i] != 'n')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 int	ft_echo(t_cmds_pipeline *pipeline, t_list *cmds)
 {
 	int	i;
@@ -20,18 +37,18 @@ int	ft_echo(t_cmds_pipeline *pipeline, t_list *cmds)
 	is_not_n = 1;
 	if (((t_command *)(cmds->data))->argc > 1)
 	{
-		is_not_n = ft_strcmp(((t_command *)(cmds->data))->argv[1],
-				"-n");
 		i = 1;
 		while (i < ((t_command *)(cmds->data))->argc &&
-			!ft_strcmp(((t_command *)(cmds->data))->argv[i], "-n"))
+			is_key_n(((t_command *)(cmds->data))->argv[i]))
+		{
+			is_not_n = 0;	
 			i++;
+		}
 		while (i < ((t_command *)(cmds->data))->argc)
 		{
-			write(1, ((t_command *)(cmds->data))->argv[i],
-				ft_strlen(((t_command *)(cmds->data))->argv[i]));
+			ft_putstr_fd(((t_command *)(cmds->data))->argv[i], 1);
 			if (i < ((t_command *)(cmds->data))->argc - 1)
-				write(1, " ", 1);
+				ft_putstr_fd(" ", 1);
 			i++;
 		}
 	}
