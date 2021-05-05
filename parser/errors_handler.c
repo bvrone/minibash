@@ -25,7 +25,7 @@ int	put_syntax_error_sep_token(char **matrix, size_t i)
 	return (0);
 }
 
-int	put_multiline_syntax_error()
+int	put_multiline_syntax_error(void)
 {
 	ft_putendl_fd("minishell: multi-line commands are not supported", 2);
 	return (0);
@@ -40,7 +40,6 @@ int	put_syntax_error_redir(char **matrix, size_t i)
 		ft_putstr_fd("newline", 2);
 	ft_putendl_fd("'", 2);
 	return (0);
-
 }
 
 void	put_error(char *target, char *msg)

@@ -25,6 +25,12 @@ typedef enum e_fd_type
 	out
 }	t_fd_type;
 
+typedef struct s_start_end
+{
+	size_t	start;
+	size_t	end;
+}			t_start_end;
+
 size_t		handle_dollar(char **matrix, size_t *i, t_cmds_pipeline	*pipeline);
 size_t		handle_quotes(char **matrix, size_t *i, t_cmds_pipeline *pipeline);
 size_t		handle_dquotes(char **matrix, size_t *i,
@@ -42,17 +48,18 @@ int			check_redir_syntax(char **symbol_matrix, size_t *i);
 int			check_shielding_syntax(char **matrix, size_t *i);
 void		comment_start(char **symbol_matrix, size_t *i);
 int			parse_pipeline(char **symbol_matrix, size_t *cur_i,
-				t_cmds_pipeline *pipeline);
+				t_cmds_pipeline *pipeline, char *line);
 void		skip_spaces(char **symbol_matrix, size_t *i);
 int			skip_double_quotes(char **symbol_matrix, size_t *i);
 size_t		skip_apostrophe(char **symbol_matrix, size_t *i);
 size_t		skip_quotes(char **symbol_matrix, size_t *i);
 size_t		set_values_in_lexemes(char **matrix, size_t i, size_t end,
 				t_cmds_pipeline *pipeline);
-int			get_argc(char **matrix, size_t i, size_t cmd_end);
+int			get_argc(char **matrix, size_t i, size_t cmd_end, char *line);
 char		**get_argv(char **matrix, size_t *cmd_i, size_t cmd_end,
 				size_t argc);
 void		symbol_shielding(char **symbol_matrix, size_t *i);
 int			check_seprs_syntax(char **matrix);
+int			is_quotes_in_line(char *line, size_t i, size_t end);
 
 #endif

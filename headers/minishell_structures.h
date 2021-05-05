@@ -58,7 +58,7 @@ t_env_var	*find_env_var(char *key, t_list *envp);
 t_env_var	*new_env_var(char *envp_line);
 void		error_exit(char *target, char *msg, int ret_code);
 void		put_error(char *target, char *msg);
-int			put_multiline_syntax_error();
+int			put_multiline_syntax_error(void);
 int			put_syntax_error_sep_token(char **matrix, size_t i);
 int			put_syntax_error_redir(char **matrix, size_t i);
 void		clear_pipeline(t_cmds_pipeline *pipeline);

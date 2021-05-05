@@ -34,11 +34,13 @@ size_t	set_values_in_lexemes(char **matrix, size_t i, size_t end,
 	return (1);
 }
 
-int	get_argc(char **matrix, size_t i, size_t cmd_end)
+int	get_argc(char **matrix, size_t i, size_t cmd_end, char *line)
 {
-	int	argc;
+	int		argc;
+	size_t	start;
 
 	argc = 0;
+	start = i;
 	while (i < cmd_end)
 	{
 		while (i < cmd_end && (matrix[i][0] == -1 || !matrix[i][0]))
@@ -48,6 +50,8 @@ int	get_argc(char **matrix, size_t i, size_t cmd_end)
 		while (i < cmd_end && matrix[i][0] != -1)
 			i++;
 	}
+	if (!argc && is_quotes_in_line(line, start, cmd_end))
+		argc = 1;
 	return (argc);
 }
 

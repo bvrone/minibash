@@ -25,7 +25,8 @@ SRC_MAIN	= main.c utils_for_main.c
 SRC_PARSER	= $(addprefix $(PARSER_DIR), dollar_handler.c quotes_handler.c \
 				skip_special_symbols.c symbol_matrix_utils2.c env_utils.c \
 				pipeline_parser.c redirect_handler.c errors_handler.c \
-				symbol_matrix_utils1.c syntax_checker.c syntax_checker2.c)
+				symbol_matrix_utils1.c syntax_checker.c syntax_checker2.c \
+				empty_quotes_dirty_hack.c)
 SRC_HEADERS	= $(addprefix $(HEADERS), ft_executor.h minishell_structures.h \
 				parser.h termcup.h)
 SRC_EXEC	= $(addprefix $(EXEC_DIR), ft_builtins.c ft_cd.c ft_echo.c \

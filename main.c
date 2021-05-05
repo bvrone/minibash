@@ -14,7 +14,9 @@
 #include "ft_executor.h"
 #include "termcup.h"
 
-void	process_shline(char **symbol_matrix, t_cmds_pipeline *pipeline)
+void	process_shline(char **symbol_matrix,
+						t_cmds_pipeline *pipeline,
+						char *line)
 {
 	size_t	pipeline_i;
 
@@ -23,7 +25,7 @@ void	process_shline(char **symbol_matrix, t_cmds_pipeline *pipeline)
 	pipeline_i = 0;
 	while (symbol_matrix[pipeline_i])
 	{
-		if (parse_pipeline(symbol_matrix, &pipeline_i, pipeline) == -1)
+		if (parse_pipeline(symbol_matrix, &pipeline_i, pipeline, line) == -1)
 			return (clear_pipeline(pipeline));
 		ft_executor(pipeline);
 		clear_pipeline(pipeline);
@@ -68,7 +70,7 @@ void	main_loop(t_cmds_pipeline *pipeline)
 		symbol_matrix = split_line_to_matrix(line);
 		if (!symbol_matrix)
 			exit(1);
-		process_shline(symbol_matrix, pipeline);
+		process_shline(symbol_matrix, pipeline, line);
 		free(line);
 		ft_split_clear(symbol_matrix);
 	}

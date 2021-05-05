@@ -37,21 +37,23 @@ int	parse_cmd(char **matrix, size_t i, size_t cmd_end,
 	return (1);
 }
 
-void	set_cmd_to_pipeline(char **matrix, size_t *i, size_t cmd_end,
-					t_cmds_pipeline *pipeline)
+void	set_cmd_to_pipeline(char **matrix,
+							t_start_end *cmd_i,
+							t_cmds_pipeline *pipeline,
+							char *line)
 {
 	t_list		*new_lst;
 	t_command	*new_cmd;
 	int			argc;
 
-	argc = get_argc(matrix, *i, cmd_end);
+	argc = get_argc(matrix, cmd_i->start, cmd_i->end, line);
 	if (!argc)
 		return ;
 	new_cmd = malloc(sizeof(t_command));
 	if (!new_cmd)
 		error_exit("malloc", "memory allocation fail", 2);
 	new_cmd->argc = argc;
-	new_cmd->argv = get_argv(matrix, i, cmd_end, argc);
+	new_cmd->argv = get_argv(matrix, &cmd_i->start, cmd_i->end, argc);
 	new_cmd->red_fd[0] = pipeline->tmp_fdin;
 	new_cmd->red_fd[1] = pipeline->tmp_fdout;
 	pipeline->tmp_fdin = -1;
@@ -77,8 +79,10 @@ size_t	get_cmd_end(char **matrix, size_t i)
 	return (i);
 }
 
-int	parse_pipeline(char **symbol_matrix, size_t *cur_i,
-			t_cmds_pipeline *pipeline)
+int	parse_pipeline(char **symbol_matrix,
+					size_t *cur_i,
+					t_cmds_pipeline *pipeline,
+					char *line)
 {
 	size_t	cmd_end;
 
@@ -89,7 +93,8 @@ int	parse_pipeline(char **symbol_matrix, size_t *cur_i,
 		cmd_end = get_cmd_end(symbol_matrix, *cur_i);
 		if (parse_cmd(symbol_matrix, *cur_i, cmd_end, pipeline) == -1)
 			return (-1);
-		set_cmd_to_pipeline(symbol_matrix, cur_i, cmd_end, pipeline);
+		set_cmd_to_pipeline(symbol_matrix, &(t_start_end){(*cur_i), cmd_end},
+			pipeline, line);
 		*cur_i = cmd_end;
 	}
 	if (symbol_matrix[*cur_i])
