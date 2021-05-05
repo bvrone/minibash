@@ -43,7 +43,7 @@ int	ft_echo(t_cmds_pipeline *pipeline, t_list *cmds)
 		while (i < ((t_command *)(cmds->data))->argc &&
 			is_key_n(((t_command *)(cmds->data))->argv[i]))
 		{
-			is_not_n = 0;	
+			is_not_n = 0;
 			i++;
 		}
 		while (i < ((t_command *)(cmds->data))->argc)
