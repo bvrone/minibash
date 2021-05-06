@@ -45,7 +45,7 @@ SRCS = $(SRC_MAIN) $(SRC_PARSER) $(SRC_EXEC) $(SRC_TERM)
 OBJS = $(OBJ_MAIN) $(OBJ_PARSER) $(OBJ_EXEC) $(OBJ_TERM)
 
 .PHONY:			all clean fclean re norm
-#почитать про флаг -MMD (сейчас нет зависимостей от хедеров)
+
 all:			$(LIBNAME) $(NAME)
 
 $(LIBNAME):
